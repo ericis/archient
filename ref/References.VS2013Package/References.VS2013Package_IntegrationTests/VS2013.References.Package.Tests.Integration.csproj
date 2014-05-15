@@ -1,22 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}</ProjectGuid>
+    <ProjectGuid>{5E3166DD-FD49-4C7C-B350-547015090741}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>References.VS2013Package_UnitTests</RootNamespace>
-    <AssemblyName>References.VS2013Package_UnitTests</AssemblyName>
+    <RootNamespace>References.VS2013Package_IntegrationTests</RootNamespace>
+    <AssemblyName>References.VS2013Package_IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath Condition="'$(OutputPath)'==''">bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath Condition="'$(OutputPath)'==''">bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,6 +37,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="envdte" />
+    <Reference Include="envdte80" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
@@ -45,47 +48,40 @@
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.12.0" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" />
-    <!---->
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" />
-    <!---->
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-    <Reference Include="Microsoft.VSSDK.UnitTestLibrary" />
-    <Reference Include="Microsoft.VSSDK.TestHostFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.VSSDK.TestHostFramework" />
   </ItemGroup>
   <ItemGroup>
+    <!--<Compile Include="Properties\AssemblyInfo.cs" />-->
+    <!---->
+    <Compile Include="MenuItemTest.cs" />
+    <!---->
+    <!---->
+    <Compile Include="ToolWindowTest.cs" />
+    <!---->
+    <!---->
+    <Compile Include="EditorTest.cs" />
+    <!---->
     <Compile Include="PackageTest.cs" />
-    <!---->
-    <Compile Include="MenuItemTests\MenuItemCallback.cs" />
-    <Compile Include="MenuItemTests\UIShellServiceMock.cs" />
-    <!---->
-    <!---->
-    <Compile Include="MyToolWindowTest\MyToolWindow.cs" />
-    <Compile Include="MyToolWindowTest\ShowToolWindow.cs" />
-    <Compile Include="MyToolWindowTest\WindowFrameMock.cs" />
-    <Compile Include="MyToolWindowTest\UIShellServiceMock.cs" />
-    <!---->
-    <!---->
-    <Compile Include="EditorTests\EditorFactoryTest.cs" />
-    <Compile Include="EditorTests\LocalRegistryServiceMock.cs" />
-    <Compile Include="EditorTests\RegisterEditorsServiceMock.cs" />
-    <!---->
+    <Compile Include="IntegrationTest Library\DialogboxPurger.cs" />
+    <Compile Include="IntegrationTest Library\NativeMethods.cs" />
+    <Compile Include="IntegrationTest Library\Utils.cs" />
+    <Compile Include="SignOff-Tests\CPPProjectTests.cs" />
+    <Compile Include="SignOff-Tests\CSharpProjectTests.cs" />
+    <Compile Include="SignOff-Tests\SolutionTests.cs" />
+    <Compile Include="SignOff-Tests\VBProjectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\References.VS2013Package.csproj">
-      <Project>{4062e471-d142-459f-b050-903f414ed868}</Project>
-      <Name>References.VS2013Package</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
