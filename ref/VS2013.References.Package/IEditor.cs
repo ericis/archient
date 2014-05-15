@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using EnvDTE;
 using tom;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
 
     /// <summary>

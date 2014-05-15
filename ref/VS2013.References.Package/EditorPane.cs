@@ -21,7 +21,7 @@ using ISysServiceProvider = System.IServiceProvider;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using VSStd97CmdID = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
     /// <summary>
     /// This control host the editor (an extended RichTextBox) and is responsible for
@@ -114,7 +114,7 @@ namespace Archient.References_VS2013Package
         }
 
         #region Fields
-        private References_VS2013PackagePackage myPackage;
+        private ArchientReferencePackage myPackage;
 
         private string fileName = string.Empty;
         private bool isDirty;
@@ -155,7 +155,7 @@ namespace Archient.References_VS2013Package
         /// our initialization functions.
         /// </summary>
         /// <param name="package">Our Package instance.</param>
-        public EditorPane(References_VS2013PackagePackage package)
+        public EditorPane(ArchientReferencePackage package)
             : base(null)
         {
             PrivateInit(package);
@@ -186,7 +186,7 @@ namespace Archient.References_VS2013Package
         /// which will show up in the properties window 
         /// </summary>
         /// <param name="package"></param>
-        private void PrivateInit(References_VS2013PackagePackage package)
+        private void PrivateInit(ArchientReferencePackage package)
         {
             myPackage = package;
             loading = false;

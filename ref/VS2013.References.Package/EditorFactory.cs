@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell;
 
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
     /// <summary>
     /// Factory for creating our editor object. Extends from the IVsEditoryFactory interface
@@ -17,11 +17,11 @@ namespace Archient.References_VS2013Package
     [Guid(GuidList.guidReferences_VS2013PackageEditorFactoryString)]
     public sealed class EditorFactory : IVsEditorFactory, IDisposable
     {
-        private References_VS2013PackagePackage editorPackage;
+        private ArchientReferencePackage editorPackage;
         private ServiceProvider vsServiceProvider;
 
 
-        public EditorFactory(References_VS2013PackagePackage package)
+        public EditorFactory(ArchientReferencePackage package)
         {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering {0} constructor", this.ToString()));
 

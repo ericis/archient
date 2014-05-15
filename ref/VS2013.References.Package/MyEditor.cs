@@ -4,7 +4,7 @@ using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using tom;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
     public partial class MyEditor : UserControl
     {

@@ -1,4 +1,4 @@
-﻿namespace Archient.References_VS2013Package
+﻿namespace Archient.VS2013.References.Package
 {
     partial class MyEditor
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBoxCtrl = new Archient.References_VS2013Package.EditorTextBox();
+            this.richTextBoxCtrl = new Archient.VS2013.References.Package.EditorTextBox();
             this.SuspendLayout();
             // 
             // richTextBoxCtrl

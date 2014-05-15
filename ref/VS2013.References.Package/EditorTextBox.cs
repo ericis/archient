@@ -3,7 +3,7 @@ using System;
 using System.Windows.Forms;
 using System.Security.Permissions;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
     public partial class EditorTextBox : RichTextBox
     {

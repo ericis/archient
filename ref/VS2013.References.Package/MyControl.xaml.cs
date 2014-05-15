@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
     /// <summary>
     /// Interaction logic for MyControl.xaml

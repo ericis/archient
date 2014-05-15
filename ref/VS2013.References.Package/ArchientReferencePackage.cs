@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 
-namespace Archient.References_VS2013Package
+namespace Archient.VS2013.References.Package
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -42,7 +42,7 @@ namespace Archient.References_VS2013Package
     // used to navigate to find results from a "Find in Files" type of operation.
     [ProvideEditorLogicalView(typeof(EditorFactory), VSConstants.LOGVIEWID.TextView_string)]
     [Guid(GuidList.guidReferences_VS2013PackagePkgString)]
-    public sealed class References_VS2013PackagePackage : Package
+    public sealed class ArchientReferencePackage : Microsoft.VisualStudio.Shell.Package
     {
         /// <summary>
         /// Default constructor of the package.
@@ -51,7 +51,7 @@ namespace Archient.References_VS2013Package
         /// not sited yet inside Visual Studio environment. The place to do all the other 
         /// initialization is the Initialize method.
         /// </summary>
-        public References_VS2013PackagePackage()
+        public ArchientReferencePackage()
         {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
