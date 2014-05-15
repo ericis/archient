@@ -7,8 +7,8 @@
     <ProjectGuid>{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>References.VS2013Package_UnitTests</RootNamespace>
-    <AssemblyName>References.VS2013Package_UnitTests</AssemblyName>
+    <RootNamespace>Archient.VS2013.References.Package.Tests.Unit</RootNamespace>
+    <AssemblyName>Archient.VS2013.References.Package.Tests.Unit</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
@@ -80,6 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VS2013.References.Package\VS2013.References.Package.csproj">
+      <Project>{4062e471-d142-459f-b050-903f414ed868}</Project>
+      <Name>VS2013.References.Package</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

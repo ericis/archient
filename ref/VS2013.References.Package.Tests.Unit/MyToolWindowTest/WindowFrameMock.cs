@@ -16,7 +16,7 @@ using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace References.VS2013Package_UnitTests.MyToolWindowTest
+namespace Archient.VS2013.References.Package.Tests.Unit.MyToolWindowTest
 {
     class WindowFrameMock
     {

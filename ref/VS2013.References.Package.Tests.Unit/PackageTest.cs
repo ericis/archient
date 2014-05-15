@@ -16,9 +16,8 @@ using System.Reflection;
 using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Archient.References_VS2013Package;
 
-namespace References.VS2013Package_UnitTests
+namespace Archient.VS2013.References.Package.Tests.Unit
 {
     [TestClass()]
     public class PackageTest
@@ -26,13 +25,13 @@ namespace References.VS2013Package_UnitTests
         [TestMethod()]
         public void CreateInstance()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
         }
 
         [TestMethod()]
         public void IsIVsPackage()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
             Assert.IsNotNull(package as IVsPackage, "The object does not implement IVsPackage");
         }
 
@@ -40,15 +39,19 @@ namespace References.VS2013Package_UnitTests
         public void SetSite()
         {
             // Create the package
-            IVsPackage package = new References_VS2013PackagePackage() as IVsPackage;
+            IVsPackage package = new ArchientReferencePackage() as IVsPackage;
             Assert.IsNotNull(package, "The object does not implement IVsPackage");
 
             // Create a basic service provider
             OleServiceProvider serviceProvider = OleServiceProvider.CreateOleServiceProviderWithBasicServices();
 
             // Add site support to register editor factory
-            BaseMock registerEditor = References.VS2013Package_UnitTests.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
+            BaseMock registerEditor = EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
             serviceProvider.AddService(typeof(SVsRegisterEditors), registerEditor, false);
+
+            // Add site support to register activity log
+            BaseMock activityLog = EditorTests.RegisterEditorsServiceMock.GetActivityLogInstance();
+            serviceProvider.AddService(typeof(SVsActivityLog), activityLog, false);
 
             // Site the package
             Assert.AreEqual(0, package.SetSite(serviceProvider), "SetSite did not return S_OK");

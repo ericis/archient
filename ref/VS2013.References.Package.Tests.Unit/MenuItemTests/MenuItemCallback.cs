@@ -18,9 +18,8 @@ using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.Shell;
-using Archient.References_VS2013Package;
 
-namespace References.VS2013Package_UnitTests.MenuItemTests
+namespace Archient.VS2013.References.Package.Tests.Unit.MenuItemTests
 {
     [TestClass()]
     public class MenuItemTest
@@ -33,22 +32,22 @@ namespace References.VS2013Package_UnitTests.MenuItemTests
         public void InitializeMenuCommand()
         {
             // Create the package
-            IVsPackage package = new References_VS2013PackagePackage() as IVsPackage;
+            IVsPackage package = new ArchientReferencePackage() as IVsPackage;
             Assert.IsNotNull(package, "The object does not implement IVsPackage");
 
             // Create a basic service provider
             OleServiceProvider serviceProvider = OleServiceProvider.CreateOleServiceProviderWithBasicServices();
 
             // Add site support to register editor factory
-            BaseMock registerEditor = References.VS2013Package_UnitTests.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
+            BaseMock registerEditor = Archient.VS2013.References.Package.Tests.Unit.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
             serviceProvider.AddService(typeof(SVsRegisterEditors), registerEditor, false);
 
             // Site the package
             Assert.AreEqual(0, package.SetSite(serviceProvider), "SetSite did not return S_OK");
 
             //Verify that the menu command can be found
-            CommandID menuCommandID = new CommandID(Archient.References_VS2013Package.GuidList.guidReferences_VS2013PackageCmdSet, (int)Archient.References_VS2013Package.PkgCmdIDList.myExampleCommandID);
-            System.Reflection.MethodInfo info = typeof(Package).GetMethod("GetService", BindingFlags.Instance | BindingFlags.NonPublic);
+            CommandID menuCommandID = new CommandID(GuidList.guidReferences_VS2013PackageCmdSet, (int)PkgCmdIDList.myExampleCommandID);
+            System.Reflection.MethodInfo info = typeof(Microsoft.VisualStudio.Shell.Package).GetMethod("GetService", BindingFlags.Instance | BindingFlags.NonPublic);
             Assert.IsNotNull(info);
             OleMenuCommandService mcs = info.Invoke(package, new object[] { (typeof(IMenuCommandService)) }) as OleMenuCommandService;
             Assert.IsNotNull(mcs.FindCommand(menuCommandID));
@@ -58,7 +57,7 @@ namespace References.VS2013Package_UnitTests.MenuItemTests
         public void MenuItemCallback()
         {
             // Create the package
-            IVsPackage package = new References_VS2013PackagePackage() as IVsPackage;
+            IVsPackage package = new ArchientReferencePackage() as IVsPackage;
             Assert.IsNotNull(package, "The object does not implement IVsPackage");
 
             // Create a basic service provider
@@ -69,7 +68,7 @@ namespace References.VS2013Package_UnitTests.MenuItemTests
             serviceProvider.AddService(typeof(SVsUIShell), uishellMock, true);
 
             // Add site support to register editor factory
-            BaseMock registerEditor = References.VS2013Package_UnitTests.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
+            BaseMock registerEditor = Archient.VS2013.References.Package.Tests.Unit.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
             serviceProvider.AddService(typeof(SVsRegisterEditors), registerEditor, false);
 
             // Site the package

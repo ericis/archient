@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VsSDK.UnitTestLibrary;
 
-namespace References.VS2013Package_UnitTests.EditorTests
+namespace Archient.VS2013.References.Package.Tests.Unit.EditorTests
 {
     /// <summary>
     /// Help code to create ILocalRegistry mock

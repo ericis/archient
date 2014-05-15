@@ -17,9 +17,8 @@ using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
-using Archient.References_VS2013Package;
 
-namespace References.VS2013Package_UnitTests.MyToolWindowTest
+namespace Archient.VS2013.References.Package.Tests.Unit.MyToolWindowTest
 {
     [TestClass()]
     public class ShowToolWindowTest
@@ -28,7 +27,7 @@ namespace References.VS2013Package_UnitTests.MyToolWindowTest
         [TestMethod()]
         public void ValidateToolWindowShown()
         {
-            IVsPackage package = new References_VS2013PackagePackage() as IVsPackage;
+            IVsPackage package = new ArchientReferencePackage() as IVsPackage;
 
             // Create a basic service provider
             OleServiceProvider serviceProvider = OleServiceProvider.CreateOleServiceProviderWithBasicServices();
@@ -38,13 +37,13 @@ namespace References.VS2013Package_UnitTests.MyToolWindowTest
             serviceProvider.AddService(typeof(SVsUIShell), uiShellService, false);
 
             // Add site support to register editor factory
-            BaseMock registerEditor = References.VS2013Package_UnitTests.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
+            BaseMock registerEditor = Archient.VS2013.References.Package.Tests.Unit.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
             serviceProvider.AddService(typeof(SVsRegisterEditors), registerEditor, false);
 
             // Site the package
             Assert.AreEqual(0, package.SetSite(serviceProvider), "SetSite did not return S_OK");
 
-            MethodInfo method = typeof(References_VS2013PackagePackage).GetMethod("ShowToolWindow", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo method = typeof(ArchientReferencePackage).GetMethod("ShowToolWindow", BindingFlags.NonPublic | BindingFlags.Instance);
 
             object result = method.Invoke(package, new object[] { null, null });
         }
@@ -53,7 +52,7 @@ namespace References.VS2013Package_UnitTests.MyToolWindowTest
         [ExpectedException(typeof(InvalidOperationException), "Did not throw expected exception when windowframe object was null")]
         public void ShowToolwindowNegativeTest()
         {
-            IVsPackage package = new References_VS2013PackagePackage() as IVsPackage;
+            IVsPackage package = new ArchientReferencePackage() as IVsPackage;
 
             // Create a basic service provider
             OleServiceProvider serviceProvider = OleServiceProvider.CreateOleServiceProviderWithBasicServices();
@@ -63,13 +62,13 @@ namespace References.VS2013Package_UnitTests.MyToolWindowTest
             serviceProvider.AddService(typeof(SVsUIShell), uiShellService, false);
 
             // Add site support to register editor factory
-            BaseMock registerEditor = References.VS2013Package_UnitTests.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
+            BaseMock registerEditor = Archient.VS2013.References.Package.Tests.Unit.EditorTests.RegisterEditorsServiceMock.GetRegisterEditorsInstance();
             serviceProvider.AddService(typeof(SVsRegisterEditors), registerEditor, false);
 
             // Site the package
             Assert.AreEqual(0, package.SetSite(serviceProvider), "SetSite did not return S_OK");
 
-            MethodInfo method = typeof(References_VS2013PackagePackage).GetMethod("ShowToolWindow", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo method = typeof(ArchientReferencePackage).GetMethod("ShowToolWindow", BindingFlags.NonPublic | BindingFlags.Instance);
 
             //Invoke thows TargetInvocationException, but we want it's inner Exception thrown by ShowToolWindow, InvalidOperationException.
             try

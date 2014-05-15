@@ -17,9 +17,8 @@ using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
-using Archient.References_VS2013Package;
 
-namespace References.VS2013Package_UnitTests.MyToolWindowTest
+namespace Archient.VS2013.References.Package.Tests.Unit.MyToolWindowTest
 {
     /// <summary>
     ///This is a test class for MyToolWindowTest and is intended

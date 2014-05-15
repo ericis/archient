@@ -13,11 +13,12 @@ using System;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VsSDK.UnitTestLibrary;
 
-namespace References.VS2013Package_UnitTests.EditorTests
+namespace Archient.VS2013.References.Package.Tests.Unit.EditorTests
 {
     static class RegisterEditorsServiceMock
     {
         private static GenericMockFactory registerEditorFactory;
+        private static GenericMockFactory activityLogFactory;
 
         /// <summary>
         /// Returns an SVsRegisterEditors service that does not implement any methods
@@ -26,9 +27,17 @@ namespace References.VS2013Package_UnitTests.EditorTests
         internal static BaseMock GetRegisterEditorsInstance()
         {
             if (registerEditorFactory == null)
-                registerEditorFactory = new GenericMockFactory("SVsRegisterEditors", new Type[] { typeof(IVsRegisterEditors) });
+                registerEditorFactory = new GenericMockFactory("SVsRegisterEditors", new[] { typeof(IVsRegisterEditors) });
             BaseMock registerEditor = registerEditorFactory.GetInstance();
             return registerEditor;
+        }
+
+        internal static BaseMock GetActivityLogInstance()
+        {
+            if (activityLogFactory == null)
+                activityLogFactory = new GenericMockFactory("SVsActivityLog", new[] { typeof(IVsActivityLog) });
+            BaseMock activityLog = activityLogFactory.GetInstance();
+            return activityLog;
         }
     }
 }

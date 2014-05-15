@@ -15,9 +15,8 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VsSDK.UnitTestLibrary;
-using Archient.References_VS2013Package;
 
-namespace References.VS2013Package_UnitTests.EditorTests
+namespace Archient.VS2013.References.Package.Tests.Unit.EditorTests
 {
     [TestClass()]
     public class EditorFactoryTest
@@ -25,7 +24,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void CreateInstance()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             EditorFactory editorFactory = new EditorFactory(package);
             Assert.IsNotNull(editorFactory, "Failed to initialize new instance of EditorFactory.");
@@ -34,7 +33,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void IsIVsEditorFactory()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
             EditorFactory editorFactory = new EditorFactory(package);
             Assert.IsNotNull(editorFactory as IVsEditorFactory, "The object does not implement IVsEditorFactory");
         }
@@ -42,7 +41,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void SetSite()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             //Create the editor factory
             EditorFactory editorFactory = new EditorFactory(package);
@@ -57,7 +56,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void CreateEditorInstance()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             //Create the editor factory
             EditorFactory editorFactory = new EditorFactory(package);
@@ -82,7 +81,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void CheckLogicalView()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             //Create the editor factory
             EditorFactory editorFactory = new EditorFactory(package);
@@ -126,7 +125,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void IsIDisposableTest()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             using (EditorFactory editorFactory = new EditorFactory(package))
             {
@@ -140,7 +139,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void DisposeTest()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             EditorFactory editorFactory = new EditorFactory(package);
             editorFactory.Dispose();
@@ -152,7 +151,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void DisposeDisposableMembersTest()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             EditorFactory editorFactory = new EditorFactory(package);
             OleServiceProvider serviceProvider = OleServiceProvider.CreateOleServiceProviderWithBasicServices();
@@ -170,7 +169,7 @@ namespace References.VS2013Package_UnitTests.EditorTests
         [TestMethod()]
         public void CloseTest()
         {
-            References_VS2013PackagePackage package = new References_VS2013PackagePackage();
+            ArchientReferencePackage package = new ArchientReferencePackage();
 
             EditorFactory editorFactory = new EditorFactory(package);
             Assert.AreEqual(VSConstants.S_OK, editorFactory.Close(), "Close did no return S_OK");

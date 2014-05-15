@@ -14,7 +14,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VsSDK.UnitTestLibrary;
 
-namespace References.VS2013Package_UnitTests
+namespace Archient.VS2013.References.Package.Tests.Unit
 {
     static class UIShellServiceMock
     {
