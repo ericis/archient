@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 
-namespace References.VS2013Package_IntegrationTests
+namespace Archient.VS2013.References.Package.Tests.Integration
 {
     /// <summary>
     /// Integration test for package validation
@@ -49,7 +49,7 @@ namespace References.VS2013Package_IntegrationTests
 
                 //Validate package load
                 IVsPackage package;
-                Guid packageGuid = new Guid(Archient.References_VS2013Package.GuidList.guidReferences_VS2013PackagePkgString);
+                Guid packageGuid = new Guid(GuidList.guidReferences_VS2013PackagePkgString);
                 Assert.IsTrue(0 == shellService.LoadPackage(ref packageGuid, out package));
                 Assert.IsNotNull(package, "Package failed to load");
 

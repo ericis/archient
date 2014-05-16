@@ -8,8 +8,10 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
 
-namespace References.VS2013Package_IntegrationTests
+namespace Archient.VS2013.References.Package.Tests.Integration
 {
+    using System.Reflection;
+
     [TestClass()]
     public class MenuItemTest
     {
@@ -42,11 +44,22 @@ namespace References.VS2013Package_IntegrationTests
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
-                CommandID menuItemCmd = new CommandID(Archient.References_VS2013Package.GuidList.guidReferences_VS2013PackageCmdSet, (int)Archient.References_VS2013Package.PkgCmdIDList.myExampleCommandID);
+                CommandID menuItemCmd = new CommandID(GuidList.guidReferences_VS2013PackageCmdSet, (int)PkgCmdIDList.myExampleCommandID);
 
+                Type packageType = typeof(ArchientReferencePackage);
+
+                ProvideEditorExtensionAttribute provideEditorExtensionAttribute = 
+                    packageType.GetCustomAttribute<ProvideEditorExtensionAttribute>(false);
+                
                 // Create the DialogBoxListener Thread.
-                string expectedDialogBoxText = string.Format(CultureInfo.CurrentCulture, "{0}\n\nInside {1}.MenuItemCallback()", "Archient Reference VS2013 Package", "Archient.References_VS2013Package.References_VS2013PackagePackage");
-                DialogBoxPurger purger = new DialogBoxPurger(NativeMethods.IDOK, expectedDialogBoxText);
+                string expectedDialogBoxText = 
+                    string.Format(
+                        CultureInfo.CurrentCulture, 
+                        "{0}\n\nInside {1}.MenuItemCallback()", 
+                        provideEditorExtensionAttribute.DefaultName, 
+                        packageType.FullName);
+
+                DialogBoxPurger purger = new DialogBoxPurger(Microsoft.VsSDK.IntegrationTestLibrary.NativeMethods.IDOK, expectedDialogBoxText);
 
                 try
                 {

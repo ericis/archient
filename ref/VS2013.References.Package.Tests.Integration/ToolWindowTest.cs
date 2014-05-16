@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
 
-namespace References.VS2013Package_IntegrationTests
+namespace Archient.VS2013.References.Package.Tests.Integration
 {
 
     [TestClass()]
@@ -42,12 +42,12 @@ namespace References.VS2013Package_IntegrationTests
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
-                CommandID toolWindowCmd = new CommandID(Archient.References_VS2013Package.GuidList.guidReferences_VS2013PackageCmdSet, (int)Archient.References_VS2013Package.PkgCmdIDList.myExampleToolWindowID);
+                CommandID toolWindowCmd = new CommandID(GuidList.guidReferences_VS2013PackageCmdSet, (int)PkgCmdIDList.myExampleToolWindowID);
 
                 TestUtils testUtils = new TestUtils();
                 testUtils.ExecuteCommand(toolWindowCmd);
 
-                Assert.IsTrue(testUtils.CanFindToolwindow(new Guid(Archient.References_VS2013Package.GuidList.guidToolWindowPersistanceString)));
+                Assert.IsTrue(testUtils.CanFindToolwindow(new Guid(GuidList.guidToolWindowPersistanceString)));
 
             });
         }

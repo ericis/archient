@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
 
-namespace References.VS2013Package_IntegrationTests.IntegrationTests
+namespace Archient.VS2013.References.Package.Tests.Integration.IntegrationTests
 {
     [TestClass]
     public class CSharpProjectTests

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
 
-namespace References.VS2013Package_IntegrationTests
+namespace Archient.VS2013.References.Package.Tests.Integration
 {
 
     [TestClass()]

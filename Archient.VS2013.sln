@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013.References.Package",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013.References.Package.Tests.Unit", "ref\VS2013.References.Package.Tests.Unit\VS2013.References.Package.Tests.Unit.csproj", "{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013.References.Package.Tests.Integration", "ref\VS2013.References.Package.Tests.Integration\VS2013.References.Package.Tests.Integration.csproj", "{5E3166DD-FD49-4C7C-B350-547015090741}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3166DD-FD49-4C7C-B350-547015090741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3166DD-FD49-4C7C-B350-547015090741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3166DD-FD49-4C7C-B350-547015090741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3166DD-FD49-4C7C-B350-547015090741}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +53,6 @@ Global
 		{9AADED6A-6FDD-4309-8332-A50651932CF4} = {C02DE003-6FE2-4307-9C06-5F5A01BD9F77}
 		{4062E471-D142-459F-B050-903F414ED868} = {53F66510-A052-4D34-B7AC-0380DF783721}
 		{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3} = {53F66510-A052-4D34-B7AC-0380DF783721}
+		{5E3166DD-FD49-4C7C-B350-547015090741} = {53F66510-A052-4D34-B7AC-0380DF783721}
 	EndGlobalSection
 EndGlobal
