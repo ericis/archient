@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{81E8B724-1849-46E1-B426-02F300480530}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_docs", "_docs", "{81E8B724-1849-46E1-B426-02F300480530}"
 	ProjectSection(SolutionItems) = preProject
 		IntegrationTests.testsettings = IntegrationTests.testsettings
 		LICENSE = LICENSE
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{81E8B724-1
 		UnitTests.testsettings = UnitTests.testsettings
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ref", "ref", "{53F66510-A052-4D34-B7AC-0380DF783721}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_ref", "_ref", "{53F66510-A052-4D34-B7AC-0380DF783721}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VS", "VS", "{C02DE003-6FE2-4307-9C06-5F5A01BD9F77}"
 EndProject
@@ -22,6 +22,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013.References.Package.Tests.Unit", "ref\VS2013.References.Package.Tests.Unit\VS2013.References.Package.Tests.Unit.csproj", "{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013.References.Package.Tests.Integration", "ref\VS2013.References.Package.Tests.Integration\VS2013.References.Package.Tests.Integration.csproj", "{5E3166DD-FD49-4C7C-B350-547015090741}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FW", "FW", "{241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Services.Clients.WCF", "src\Services.Clients.WCF\Services.Clients.WCF.fsproj", "{6353AF21-DDAF-4BF1-B7B4-AB898BAB7CA1}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Services.Clients.WCF.Tests.Unit", "src\Services.Clients.WCF.Tests.Unit\Services.Clients.WCF.Tests.Unit.fsproj", "{702DCAD2-DFF8-46FD-BBA4-47EA33326614}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Test.Xunit", "src\Test.Xunit\Test.Xunit.fsproj", "{C03731F8-CE9F-4E15-A14D-99230FE7732E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +53,18 @@ Global
 		{5E3166DD-FD49-4C7C-B350-547015090741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E3166DD-FD49-4C7C-B350-547015090741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E3166DD-FD49-4C7C-B350-547015090741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6353AF21-DDAF-4BF1-B7B4-AB898BAB7CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6353AF21-DDAF-4BF1-B7B4-AB898BAB7CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6353AF21-DDAF-4BF1-B7B4-AB898BAB7CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6353AF21-DDAF-4BF1-B7B4-AB898BAB7CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{702DCAD2-DFF8-46FD-BBA4-47EA33326614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{702DCAD2-DFF8-46FD-BBA4-47EA33326614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{702DCAD2-DFF8-46FD-BBA4-47EA33326614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{702DCAD2-DFF8-46FD-BBA4-47EA33326614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C03731F8-CE9F-4E15-A14D-99230FE7732E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C03731F8-CE9F-4E15-A14D-99230FE7732E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C03731F8-CE9F-4E15-A14D-99230FE7732E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C03731F8-CE9F-4E15-A14D-99230FE7732E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +74,8 @@ Global
 		{4062E471-D142-459F-B050-903F414ED868} = {53F66510-A052-4D34-B7AC-0380DF783721}
 		{02A4D32B-61D0-45D4-9A98-6F5433D1FBA3} = {53F66510-A052-4D34-B7AC-0380DF783721}
 		{5E3166DD-FD49-4C7C-B350-547015090741} = {53F66510-A052-4D34-B7AC-0380DF783721}
+		{6353AF21-DDAF-4BF1-B7B4-AB898BAB7CA1} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
+		{702DCAD2-DFF8-46FD-BBA4-47EA33326614} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
+		{C03731F8-CE9F-4E15-A14D-99230FE7732E} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
 	EndGlobalSection
 EndGlobal
