@@ -21,9 +21,9 @@ module WcfTypeExtensionsTests =
         
         let svc = createSvc()
         let called = ref false
-        let action = new Action<_>(fun _ -> called := true)
+        let operation = new Action<_>(fun _ -> called := true)
         
-        svc.CreateAndCall(action, "svc")
+        svc.CreateAndCall(operation, "svc")
         
         !called |> Assert.isTrue
 
@@ -79,4 +79,82 @@ module WcfTypeExtensionsTests =
         svc.CreateSendAndReceive(expectedRequest, operation, "svc")
         |> Assert.areEqual expectedResponse
         
+        !called |> Assert.isTrue
+
+    let [<Fact; UnitTest>] ``IServiceContainer.Call``() =
+        
+        let svc = createSvc()
+        let called = ref false
+        let operation = new Action<_>(fun _ -> called := true)
+
+        let container = svc.Create("svc")
+        
+        !called |> Assert.isFalse
+
+        container.Call(operation)
+
+        !called |> Assert.isTrue
+
+    let [<Fact; UnitTest>] ``IServiceContainer.Send``() =
+        
+        let svc = createSvc()
+        let expectedRequest = "request"
+        let called = ref false
+        let operation = 
+            new Action<_,_>(
+                fun _ -> 
+                    fun request -> 
+                        request |> Assert.areEqual expectedRequest
+                        called := true)
+
+        let container = svc.Create("svc")
+        
+        !called |> Assert.isFalse
+
+        container.Send(expectedRequest, operation)
+
+        !called |> Assert.isTrue
+
+    let [<Fact; UnitTest>] ``IServiceContainer.Receive``() =
+        
+        let svc = createSvc()
+        let expectedResponse = "response"
+        let called = ref false
+        let operation = 
+            new Func<_,_>(
+                fun _ -> 
+                    called := true
+                    expectedResponse)
+
+        let container = svc.Create("svc")
+        
+        !called |> Assert.isFalse
+
+        container.Receive(operation)
+        |> Assert.areEqual expectedResponse
+
+        !called |> Assert.isTrue
+
+    let [<Fact; UnitTest>] ``IServiceContainer.SendAndReceive``() =
+        
+        let expectedRequest = "request"
+        let simpleResponse = "response"
+        let expectedResponse = sprintf "%s %s" expectedRequest simpleResponse
+
+        let svc = createSvc()
+        let called = ref false
+        let operation = 
+            new Func<_,_,_>(
+                fun _ -> 
+                    fun request -> 
+                        called := true
+                        sprintf "%s %s" request simpleResponse)
+
+        let container = svc.Create("svc")
+        
+        !called |> Assert.isFalse
+
+        container.SendAndReceive(expectedRequest, operation)
+        |> Assert.areEqual expectedResponse
+
         !called |> Assert.isTrue
