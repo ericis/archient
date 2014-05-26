@@ -2,11 +2,13 @@
 
 open System
 
-/// Tag interface for extension methods decorator pattern.
+/// <summary>A "tag" interface for classes that use a service.</summary>
+/// <typeparam name="TService">The type of the service used by the class.</typeparam>
 [<Interface>]
 type IUseService<'TService> = interface end
 
-/// Contract for a WCF service container.
+/// <summary>A contract for a class that contains a service.</summary>
+/// <typeparam name="TService">The type of the service contained by the class.</typeparam>
 [<Interface>]
 type IServiceContainer<'TService> = 
     inherit IDisposable
@@ -19,7 +21,8 @@ type IServiceContainer<'TService> =
 [<Sealed>]
 type ServiceContainer<'TService> =
     
-    /// Creates a new WCF service container of the specified type.
+    /// <summary>Creates a new WCF service container of the specified type.</summary>
+    /// <typeparam name="TService">The type of the WCF service.</typeparam>
     new : 'TService -> ServiceContainer<'TService>
 
     interface IServiceContainer<'TService>

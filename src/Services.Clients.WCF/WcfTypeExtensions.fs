@@ -3,23 +3,24 @@
 open System
 open System.Runtime.CompilerServices
 
+/// Extensions to the <cref see="IUseService{TService}" /> and <cref see="IServiceContainer{TService}" /> interfaces.
 [<Sealed; Extension>]
 type WcfClientExtensions () =
     
     /// <summary>Creates a WCF service container of the specified type <c>'TService</c> at the specified <c>endpoint</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <param name="tag">The instance implementing the tag interface.</param>
-    /// <param name="endpoint">The WCF service endpoint.</param>
+    /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The service container.</returns>
     [<Extension>]
-    static member Create<'TService>(tag:IUseService<'TService>, endpoint) =
-        let svc = WCF.createFromEndpoint<'TService> endpoint
+    static member Create<'TService>(tag:IUseService<'TService>, configEndpointName) =
+        let svc = WCF.createFromEndpoint<'TService> configEndpointName
 
         (new ServiceContainer<_>(svc)) :> IServiceContainer<_>
         
     /// <summary>Calls a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
-    /// <param name="tag">The instance implementing the tag interface.</param>
+    /// <param name="container">The container instance containing the service instance.</param>
     /// <param name="operation">The WCF service operation.</param>
     [<Extension>]
     static member Call<'TService>(container:IServiceContainer<'TService>, operation:Action<'TService>) =
@@ -28,7 +29,7 @@ type WcfClientExtensions () =
     /// <summary>Sends the specified <c>request</c> to a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <typeparam name="TRequest">The type of the service operation's request.</typeparam>
-    /// <param name="tag">The instance implementing the tag interface.</param>
+    /// <param name="container">The container instance containing the service instance.</param>
     /// <param name="request">The request to be sent to the service operation.</param>
     /// <param name="operation">The WCF service operation.</param>
     [<Extension>]
@@ -38,7 +39,7 @@ type WcfClientExtensions () =
     /// <summary>Calls and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <typeparam name="TResponse">The type of the service operation's response.</typeparam>
-    /// <param name="tag">The instance implementing the tag interface.</param>
+    /// <param name="container">The container instance containing the service instance.</param>
     /// <param name="operation">The WCF service operation.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
@@ -49,7 +50,7 @@ type WcfClientExtensions () =
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <typeparam name="TRequest">The type of the service operation's request.</typeparam>
     /// <typeparam name="TResponse">The type of the service operation's response.</typeparam>
-    /// <param name="tag">The instance implementing the tag interface.</param>
+    /// <param name="container">The container instance containing the service instance.</param>
     /// <param name="request">The request to be sent to the service operation.</param>
     /// <param name="operation">The WCF service operation.</param>
     /// <returns>The service operation's response.</returns>
@@ -61,10 +62,11 @@ type WcfClientExtensions () =
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <param name="tag">The instance implementing the tag interface.</param>
     /// <param name="operation">The WCF service operation.</param>
+    /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     [<Extension>]
-    static member CreateAndCall<'TService>(tag:IUseService<'TService>, op:Action<'TService>, endpoint) =
-        use svc = WcfClientExtensions.Create<_>(tag, endpoint)
-        WcfClientExtensions.Call<_>(svc, op)
+    static member CreateAndCall<'TService>(tag:IUseService<'TService>, operation:Action<'TService>, configEndpointName) =
+        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
+        WcfClientExtensions.Call<_>(svc, operation)
         
     /// <summary>Creates a WCF service client channel and sends the specified <c>request</c> to a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -72,21 +74,23 @@ type WcfClientExtensions () =
     /// <param name="tag">The instance implementing the tag interface.</param>
     /// <param name="request">The request to be sent to the service operation.</param>
     /// <param name="operation">The WCF service operation.</param>
+    /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     [<Extension>]
-    static member CreateAndSend<'TService,'TRequest>(tag:IUseService<'TService>, req:'TRequest, op:Action<'TService,'TRequest>, endpoint) =
-        use svc = WcfClientExtensions.Create<_>(tag, endpoint)
-        WcfClientExtensions.Send<_,_>(svc, req, op)
+    static member CreateAndSend<'TService,'TRequest>(tag:IUseService<'TService>, request:'TRequest, operation:Action<'TService,'TRequest>, configEndpointName) =
+        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
+        WcfClientExtensions.Send<_,_>(svc, request, operation)
         
     /// <summary>Creates a WCF service client channel and calls and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <typeparam name="TResponse">The type of the service operation's response.</typeparam>
     /// <param name="tag">The instance implementing the tag interface.</param>
     /// <param name="operation">The WCF service operation.</param>
+    /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
-    static member CreateAndReceive<'TService,'TResponse>(tag:IUseService<'TService>, op:Func<'TService,'TResponse>, endpoint) =
-        use svc = WcfClientExtensions.Create<_>(tag, endpoint)
-        WcfClientExtensions.Receive<_,_>(svc, op)
+    static member CreateAndReceive<'TService,'TResponse>(tag:IUseService<'TService>, operation:Func<'TService,'TResponse>, configEndpointName) =
+        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
+        WcfClientExtensions.Receive<_,_>(svc, operation)
         
     /// <summary>Creates a WCF service client channel and sends the specified <c>request</c> and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -95,8 +99,9 @@ type WcfClientExtensions () =
     /// <param name="tag">The instance implementing the tag interface.</param>
     /// <param name="request">The request to be sent to the service operation.</param>
     /// <param name="operation">The WCF service operation.</param>
+    /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
-    static member CreateSendAndReceive<'TService,'TRequest,'TResponse>(tag:IUseService<'TService>, req:'TRequest, op:Func<'TService,'TRequest,'TResponse>, endpoint) =
-        use svc = WcfClientExtensions.Create<_>(tag, endpoint)
-        WcfClientExtensions.SendAndReceive<_,_,_>(svc, req, op)
+    static member CreateSendAndReceive<'TService,'TRequest,'TResponse>(tag:IUseService<'TService>, request:'TRequest, operation:Func<'TService,'TRequest,'TResponse>, configEndpointName) =
+        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
+        WcfClientExtensions.SendAndReceive<_,_,_>(svc, request, operation)

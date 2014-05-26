@@ -20,9 +20,9 @@ module WCF =
             | CommunicationState.Faulted -> comm.Value.Abort()
             | _ -> comm.Value.Close()
 
-    let createFromEndpoint<'TService> (configEndPointName:string)  =
+    let createFromEndpoint<'TService> (configEndpointName:string)  =
         
-        let factory = new ChannelFactory<'TService>(configEndPointName)
+        let factory = new ChannelFactory<'TService>(configEndpointName)
         
         factory.CreateChannel()
         

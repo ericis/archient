@@ -63,7 +63,7 @@
     <None Include="packages.config" />
     <Compile Include="TestTypes.fs" />
     <Compile Include="WcfTests.fs" />
-    <Compile Include="WcfTypeExtensions.fs" />
+    <Compile Include="WcfTypeExtensionTests.fs" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
