@@ -16,3 +16,6 @@ type AcceptanceTestAttribute() =
 
 type SystemTestAttribute() =
     inherit TraitAttribute("Test Type", "System")
+
+type ExampleTestAttribute() =
+    inherit TraitAttribute("Test Type", "Example")
