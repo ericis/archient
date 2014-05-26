@@ -59,7 +59,6 @@
   </Target>
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="Assert.fs" />
     <Compile Include="..\GlobalAssemblyInfo.fs">
       <Link>GlobalAssemblyInfo.fs</Link>
     </Compile>
@@ -67,6 +66,8 @@
       <Link>SharedAssemblyFileVersion.fs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Assert.fs" />
+    <Compile Include="TestTypes.fs" />
     <None Include="Test.Xunit.nuspec" />
   </ItemGroup>
   <ItemGroup>
