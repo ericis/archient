@@ -5,8 +5,8 @@ module SharedAssemblyFileVersion
 
 open System.Reflection
 
-[<assembly: AssemblyVersion("0.1.10526-alpha1627")>]
-[<assembly: AssemblyFileVersion("0.1.10526-alpha1627")>]
-[<assembly: AssemblyInformationalVersion("0.1.10526-alpha1627")>]
+[<assembly: AssemblyVersion("0.1.10526-alpha1715")>]
+[<assembly: AssemblyFileVersion("0.1.10526-alpha1715")>]
+[<assembly: AssemblyInformationalVersion("0.1.10526-alpha1715")>]
 
 ()
