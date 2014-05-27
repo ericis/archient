@@ -52,7 +52,33 @@
       <Project>{c03731f8-ce9f-4e15-a14d-99230fe7732e}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Web.Api.Host\Web.Api.Host.fsproj">
+      <Name>Web.Api.Host</Name>
+      <Project>{10722cfa-be72-4e04-9385-aca1870579dd}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Api\Web.Api.fsproj">
+      <Name>Web.Api</Name>
+      <Project>{fa6c6e92-cdee-4bfe-9f8e-6b4a6efaf7b3}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Host\Web.Host.fsproj">
+      <Name>Web.Host</Name>
+      <Project>{d0ef0621-6556-4c1b-a892-f192b00b5dc7}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Mvc.Host\Web.Mvc.Host.fsproj">
+      <Name>Web.Mvc.Host</Name>
+      <Project>{3cdb110e-5f0c-4300-8123-6f6023a1b047}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Mvc\Web.Mvc.fsproj">
+      <Name>Web.Mvc</Name>
+      <Project>{a6ab5e8b-5487-4108-811d-f9a9bc5be195}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>
@@ -71,8 +97,18 @@
   <Import Project="$(FSharpTargetsPath)" />
   <PropertyGroup>
     <PreBuildEvent>if not exist $(ProjectDir)..\..\.deploy\ mkdir $(ProjectDir)..\..\.deploy\
+
 $(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Test.Xunit\Test.Xunit.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Services.Clients.WCF\Services.Clients.WCF.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\</PreBuildEvent>
+
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Services.Clients.WCF\Services.Clients.WCF.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Host\Web.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc\Web.Mvc.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc.Host\Web.Mvc.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api\Web.Api.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api.Host\Web.Api.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

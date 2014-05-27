@@ -24,7 +24,7 @@ type WcfClientExtensions () =
     /// <param name="operation">The WCF service operation.</param>
     [<Extension>]
     static member Call<'TService>(container:IServiceContainer<'TService>, operation:Action<'TService>) =
-        container.Service |> WCF.callAndForget (fun svc -> operation.Invoke(svc))
+        container.InternalService |> WCF.callAndForget (fun svc -> operation.Invoke(svc))
 
     /// <summary>Sends the specified <c>request</c> to a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -34,7 +34,7 @@ type WcfClientExtensions () =
     /// <param name="operation">The WCF service operation.</param>
     [<Extension>]
     static member Send<'TService,'TRequest>(container:IServiceContainer<'TService>, request:'TRequest, operation:Action<'TService,'TRequest>) =
-        container.Service |> WCF.callAndForget (fun svc -> operation.Invoke(svc, request))
+        container.InternalService |> WCF.callAndForget (fun svc -> operation.Invoke(svc, request))
         
     /// <summary>Calls and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -44,7 +44,7 @@ type WcfClientExtensions () =
     /// <returns>The service operation's response.</returns>
     [<Extension>]
     static member Receive<'TService,'TResponse>(container:IServiceContainer<'TService>, operation:Func<'TService,'TResponse>) =
-        container.Service |> WCF.callAndReceive (fun svc -> operation.Invoke(svc))
+        container.InternalService |> WCF.callAndReceive (fun svc -> operation.Invoke(svc))
         
     /// <summary>Sends the specified <c>request</c> and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -56,7 +56,7 @@ type WcfClientExtensions () =
     /// <returns>The service operation's response.</returns>
     [<Extension>]
     static member SendAndReceive<'TService,'TRequest,'TResponse>(container:IServiceContainer<'TService>, request:'TRequest, operation:Func<'TService,'TRequest,'TResponse>) =
-        container.Service |> WCF.callAndReceive (fun svc -> operation.Invoke(svc, request))
+        container.InternalService |> WCF.callAndReceive (fun svc -> operation.Invoke(svc, request))
         
     /// <summary>Creates a WCF service client channel and calls a service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>

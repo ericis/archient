@@ -7,13 +7,13 @@ type IUseService<'TService> = interface end
 type IServiceContainer<'TService> = 
     inherit IDisposable
 
-    abstract member Service : 'TService with get
+    abstract member InternalService : 'TService with get
 
 [<Sealed>]
 type ServiceContainer<'TService> (svc:'TService) =
     interface IServiceContainer<'TService> with
         
-        override me.Service = svc
+        override me.InternalService = svc
 
         override me.Dispose() =
             match box svc with

@@ -14,7 +14,7 @@ type IServiceContainer<'TService> =
     inherit IDisposable
 
     /// Gets the contained WCF service instance.
-    abstract member Service : 'TService with get
+    abstract member InternalService : 'TService with get
 
 /// <summary>A WCF service container.</summary>
 /// <typeparam name="TService">The type of the WCF service.</typeparam>
