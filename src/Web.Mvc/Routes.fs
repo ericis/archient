@@ -1,8 +1,9 @@
 ﻿namespace Archient.Web.Mvc
 
 module Routes =
-    open System.Web.Routing
+    open System
     open System.Web.Mvc
+    open System.Web.Routing
     
     let getGlobalRoutes() = 
         RouteTable.Routes
@@ -26,3 +27,28 @@ module Routes =
         let removed = routes.Remove(route)
 
         routes
+
+    let prettyPrint (routes:RouteCollection) =
+        routes
+        |> Seq.iter (fun route -> 
+            try
+                match route with
+                | :? System.Web.Routing.Route as r -> 
+                    let map (routeValues:System.Web.Routing.RouteValueDictionary) =
+                        try
+                            match routeValues.Count with
+                            | 0 -> Array.empty
+                            | _ -> routeValues |> Seq.map (fun routeValue -> sprintf "{ '%s' = '%A' }" routeValue.Key routeValue.Value) |> Seq.toArray
+                        with | _ -> Array.empty
+
+                    let constraints, data, defaults = 
+                        (
+                            String.Join(",", map r.Constraints), 
+                            String.Join(",", map r.DataTokens), 
+                            String.Join(",", map r.Defaults))
+
+                    System.Diagnostics.Debug.WriteLine(sprintf "%s to %s: { 'constraints': [%s], 'data': [%s], 'defaults': [%s] }" (r.GetType().FullName) r.Url constraints data defaults)
+
+                | :? System.Web.Routing.RouteBase as br -> System.Diagnostics.Debug.WriteLine(sprintf "Base route: %A" br)
+                | r -> System.Diagnostics.Debug.WriteLine(sprintf "Unknown route: %A" r)
+            with | _ -> System.Diagnostics.Debug.WriteLine("Error processing route") )

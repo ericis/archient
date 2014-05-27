@@ -69,6 +69,7 @@
     <Compile Include="Routes.fs" />
     <Compile Include="RouteCollectionExtensions.fs" />
     <Compile Include="Areas.fs" />
+    <Compile Include="Filters.fs" />
     <None Include="Web.Mvc.nuspec" />
   </ItemGroup>
   <ItemGroup>

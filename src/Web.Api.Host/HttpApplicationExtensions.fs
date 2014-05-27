@@ -9,8 +9,8 @@ open System.Web.Http
 type HttpApplicationExtensions() =
     
     [<Extension>]
-    static member GetHttpConfiguration(app:HttpApplication) =
-        Configuration.getGlobalConfiguration()
+    static member InitializeHttpConfiguration(app:HttpApplication, initialization:Action<_>) =
+        Configuration.initializeGlobalConfiguration(fun configuration -> initialization.Invoke(configuration))
     
     [<Extension>]
     static member MapAttributeRoutes(cfg:HttpConfiguration) =

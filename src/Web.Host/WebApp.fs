@@ -3,6 +3,7 @@
 open System
 open System.Collections.Generic
 open System.Web
+open System.Diagnostics
 
 type WebApp() =
     inherit HttpApplication()
@@ -15,5 +16,17 @@ type WebApp() =
         me.GetStartupTasks()
         |> Seq.iter (fun action -> action.Invoke())
 
+    abstract member OnError : exn -> unit
+    default me.OnError(error) = 
+        if error <> null then
+            Debug.WriteLine(error.Message)
+            Debug.WriteLine(error.ToString())
+            Trace.TraceError(error.Message)
+        ()
+
     member me.Application_Start(sender:obj, e:EventArgs) =
         me.OnStart()
+
+    member me.Application_Error(sender:obj, e:EventArgs) =
+        let error = me.Server.GetLastError()
+        me.OnError(error)

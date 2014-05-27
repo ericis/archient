@@ -51,7 +51,7 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <None Include="Web.Api.Host.nuspec" />
+    <None Include="packages.config" />
     <Compile Include="..\GlobalAssemblyInfo.fs">
       <Link>GlobalAssemblyInfo.fs</Link>
     </Compile>
@@ -61,7 +61,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Configuration.fs" />
     <Compile Include="HttpApplicationExtensions.fs" />
-    <None Include="packages.config" />
+    <Compile Include="StartupTasks.fs" />
+    <None Include="Web.Api.Host.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -89,6 +90,13 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.1.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Web.Api\Web.Api.fsproj">
+      <Name>Web.Api</Name>
+      <Project>{fa6c6e92-cdee-4bfe-9f8e-6b4a6efaf7b3}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Versions.Settings.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

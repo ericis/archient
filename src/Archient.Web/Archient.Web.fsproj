@@ -59,6 +59,7 @@
   </Target>
   <ItemGroup>
     <Compile Include="ControllerTypes.fs" />
+    <Compile Include="StartupTasks.fs" />
     <Compile Include="ArchientApp.fs" />
     <None Include="packages.config" />
   </ItemGroup>
