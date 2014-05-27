@@ -57,7 +57,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Archient.Web", "src\Archien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Facebook", "ref\Web.Facebook\Web.Facebook.csproj", "{CF7FBA70-D44C-4020-A5DB-6684D835398A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Facebook.Tests.Unit", "Web.Facebook.Tests.Unit\Web.Facebook.Tests.Unit.csproj", "{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Facebook.Tests.Unit", "ref\Web.Facebook.Tests.Unit\Web.Facebook.Tests.Unit.csproj", "{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -189,10 +189,13 @@ Global
 		{CF7FBA70-D44C-4020-A5DB-6684D835398A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7FBA70-D44C-4020-A5DB-6684D835398A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Debug FW|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Debug FW|Any CPU.Build.0 = Debug|Any CPU
 		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Debug Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Debug Web|Any CPU.Build.0 = Debug|Any CPU
 		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3D1FCBE-7EDF-44F7-AF0D-90C4091EBEFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
