@@ -59,9 +59,10 @@
       <Link>SharedAssemblyFileVersion.fs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Routes.fsi" />
     <Compile Include="Routes.fs" />
-    <None Include="Web.Api.nuspec" />
     <Compile Include="HttpRouteCollectionExtensions.fs" />
+    <None Include="Web.Api.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

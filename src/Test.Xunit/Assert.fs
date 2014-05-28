@@ -44,5 +44,5 @@ module Assert =
     let isAssignableFrom<'T> (instance:obj) =
         ignore <| Assert.IsAssignableFrom<'T>(instance)
 
-    let throws<'T when 'T :> exn> (f:unit->unit) =
-        ignore <| Assert.Throws<'T>(fun _ -> f())
+    let throws<'T when 'T :> exn> (action:unit->unit) =
+        ignore <| Assert.Throws<'T>(fun _ -> action())

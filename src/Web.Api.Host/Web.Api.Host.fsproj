@@ -59,8 +59,10 @@
       <Link>SharedAssemblyFileVersion.fs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Configuration.fsi" />
     <Compile Include="Configuration.fs" />
     <Compile Include="HttpApplicationExtensions.fs" />
+    <Compile Include="StartupTasks.fsi" />
     <Compile Include="StartupTasks.fs" />
     <None Include="Web.Api.Host.nuspec" />
   </ItemGroup>

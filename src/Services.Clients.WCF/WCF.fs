@@ -26,14 +26,14 @@ module WCF =
         
         factory.CreateChannel()
         
-    let callAndForget<'TService> (op:'TService->unit) (svc:'TService) =
+    let callAndForget<'TService> (operation:'TService->unit) (service:'TService) =
         try
-            async { op svc }
+            async { operation service }
             |> Async.RunSynchronously
-        finally finalizeCall (tryGetCommunicationObject svc)
+        finally finalizeCall (tryGetCommunicationObject service)
 
-    let callAndReceive<'TService,'TResponse> (op:'TService->'TResponse) (svc:'TService) =
+    let callAndReceive<'TService,'TResponse> (operation:'TService->'TResponse) (service:'TService) =
         try
-            async { return (op svc) }
+            async { return (operation service) }
             |> Async.RunSynchronously
-        finally finalizeCall (tryGetCommunicationObject svc)
+        finally finalizeCall (tryGetCommunicationObject service)

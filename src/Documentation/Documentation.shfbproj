@@ -27,8 +27,13 @@
       <Argument Key="maxVersionParts" Value="" xmlns="" />
     </TransformComponentArguments>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Services.Clients.WCF\bin\Debug\Archient.Services.Clients.Wcf.xml" />
-      <DocumentationSource sourceFile="..\Services.Clients.WCF\bin\Debug\Archient.Services.Clients.Wcf.dll" />
+      <DocumentationSource sourceFile="..\Services.Clients.WCF\Services.Clients.WCF.fsproj" />
+      <DocumentationSource sourceFile="..\Test.Xunit\Test.Xunit.fsproj" />
+      <DocumentationSource sourceFile="..\Web.Api\Web.Api.fsproj" />
+      <DocumentationSource sourceFile="..\Web.Api.Host\Web.Api.Host.fsproj" />
+      <DocumentationSource sourceFile="..\Web.Host\Web.Host.fsproj" />
+      <DocumentationSource sourceFile="..\Web.Mvc\Web.Mvc.fsproj" />
+      <DocumentationSource sourceFile="..\Web.Mvc.Host\Web.Mvc.Host.fsproj" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -48,8 +53,11 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Archient.Services.Clients" isDocumented="True" xmlns="">A library of abstractions for .NET clients of WCF Services.</NamespaceSummaryItem>
-    </NamespaceSummaries>
+      <NamespaceSummaryItem name="Archient.Services.Clients" isDocumented="True">A library of abstractions for .NET clients of WCF Services.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Archient.Testing" isDocumented="True">A library of abstractions for .NET Testing with Xunit.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Archient.Web" isDocumented="True">A Web Library.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Archient.Web.Http" isDocumented="True">A Web API Library.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Archient.Web.Mvc" isDocumented="True">A Web MVC Library.</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

@@ -10,13 +10,13 @@ type IServiceContainer<'TService> =
     abstract member InternalService : 'TService with get
 
 [<Sealed>]
-type ServiceContainer<'TService> (svc:'TService) =
+type ServiceContainer<'TService> (service:'TService) =
     interface IServiceContainer<'TService> with
         
-        override me.InternalService = svc
+        override me.InternalService = service
 
         override me.Dispose() =
-            match box svc with
+            match box service with
             | null -> ()
             | :? IDisposable as disposable -> disposable.Dispose()
             | _ -> ()

@@ -102,7 +102,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ref\Web.Facebook\Web.Facebook.csproj">
+    <ProjectReference Include="..\Web.Facebook\Web.Facebook.csproj">
       <Project>{CF7FBA70-D44C-4020-A5DB-6684D835398A}</Project>
       <Name>Web.Facebook</Name>
     </ProjectReference>

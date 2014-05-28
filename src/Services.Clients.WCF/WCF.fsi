@@ -9,12 +9,12 @@ module WCF =
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The WCF service channel.</returns>
-    val createFromEndpoint<'TService> : string -> 'TService
+    val createFromEndpoint<'TService> : configEndpointName:string -> 'TService
     
     /// <summary>Calls a WCF service operation without a response.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
-    /// <param name="op">The service operation call definition.</param>
-    /// <param name="svc">The WCF service.</param>
+    /// <param name="operation">The service operation call definition.</param>
+    /// <param name="service">The WCF service.</param>
     /// <remarks>
     /// <para>
     /// The service operation is executed internally as an F# asynchronous call to free the client 
@@ -27,16 +27,16 @@ module WCF =
     /// </para>
     /// <para>
     /// The WCF client channel is automatically closed (success) or aborted (error) if the 
-    /// <c>svc</c> is an instance of <see cref="ICommunicationObject"/>.
+    /// <c>service</c> is an instance of <see cref="ICommunicationObject"/>.
     /// </para>
     /// </remarks>
-    val callAndForget<'TService> : ('TService->unit) -> 'TService -> unit
+    val callAndForget<'TService> : operation:('TService->unit) -> service:'TService -> unit
 
     /// <summary>Calls a WCF service operation and returns the response.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
     /// <typeparam name="TResponse">The type of the WCF service operation's response.</typeparam>
-    /// <param name="op">The service operation call definition.</param>
-    /// <param name="svc">The WCF service.</param>
+    /// <param name="operation">The service operation call definition.</param>
+    /// <param name="service">The WCF service.</param>
     /// <returns>The service operation's response.</returns>
     /// <remarks>
     /// <para>
@@ -50,7 +50,7 @@ module WCF =
     /// </para>
     /// <para>
     /// The WCF client channel is automatically closed (success) or aborted (error) if the 
-    /// <c>svc</c> is an instance of <see cref="ICommunicationObject"/>.
+    /// <c>service</c> is an instance of <see cref="ICommunicationObject"/>.
     /// </para>
     /// </remarks>
-    val callAndReceive<'TService,'TResponse> : ('TService->'TResponse) -> 'TService -> 'TResponse
+    val callAndReceive<'TService,'TResponse> : operation:('TService->'TResponse) -> service:'TService -> 'TResponse

@@ -23,6 +23,7 @@ type ServiceContainer<'TService> =
     
     /// <summary>Creates a new WCF service container of the specified type.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
-    new : 'TService -> ServiceContainer<'TService>
+    /// <param name="service">The WCF service instance to contain.</param>
+    new : service:'TService -> ServiceContainer<'TService>
 
     interface IServiceContainer<'TService>
