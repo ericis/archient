@@ -103,7 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Facebook\Web.Facebook.csproj">
-      <Project>{CF7FBA70-D44C-4020-A5DB-6684D835398A}</Project>
+      <Project>{cf7fba70-d44c-4020-a5db-6684d835398a}</Project>
       <Name>Web.Facebook</Name>
     </ProjectReference>
   </ItemGroup>
