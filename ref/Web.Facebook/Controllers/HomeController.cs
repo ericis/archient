@@ -10,7 +10,9 @@ namespace Web.Facebook.Controllers
 {
     public class HomeController : Controller
     {
-        [FacebookAuthorize("email", "user_photos")]
+        // BUG: Original VS template for FB does not comply w/ new, default FB privacy settings for public profile access only
+        // [FacebookAuthorize("email", "user_photos")]
+        [FacebookAuthorize]
         public async Task<ActionResult> Index(FacebookContext context)
         {
             if (ModelState.IsValid)
