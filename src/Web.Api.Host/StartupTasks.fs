@@ -8,7 +8,7 @@ module StartupTasks =
     type ApiRouteDefaults = 
         { id : RouteParameter }
     
-    let registerDefaultHttpRoutes() = 
+    let registerDefaultHttpRoutes controllerNamespaces = 
         
         // configure global
         Configuration.initializeGlobalConfiguration (fun configuration -> 
@@ -20,5 +20,5 @@ module StartupTasks =
             let httpDefaults = { id = RouteParameter.Optional }
             
             configuration.Routes
-            |> Routes.mapHttp "DefaultApi" "api/{controller}/{id}" httpDefaults
+            |> Routes.mapHttpToNamespaces "DefaultApi" "api/{controller}/{id}" httpDefaults controllerNamespaces
             |> ignore)

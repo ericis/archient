@@ -1,0 +1,34 @@
+﻿<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="ProjectGroup">
+  <TemplateData>
+    <Name>Blank Solution Structure</Name>
+    <Description>Creates standard solution folders for a layered architecture service or application.</Description>
+    <TemplateID>Archient.CSharp.SolutionStructure</TemplateID>
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>1</SortOrder>
+    <CreateNewFolder>false</CreateNewFolder>
+    <DefaultName>Solution</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <!--<Icon>FwWhiteInv.ico</Icon>-->
+    <!--<PreviewImage>BlankSolutionPreview.png</PreviewImage>-->
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+    <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
+    <!-- Needed for linked files referenced in project file to work properly -->
+    <CreateInPlace>true</CreateInPlace>
+  </TemplateData>
+
+  <TemplateContent>
+    <ProjectCollection>
+      <ProjectTemplateLink ProjectName="SolutionItems.NuGet">
+        BlankSolution\_nuget\SolutionItems.vstemplate
+      </ProjectTemplateLink>
+    </ProjectCollection>
+  </TemplateContent>
+
+  <WizardExtension>
+    <Assembly>Archient.VisualStudio.Guidance, Version=0.0.0.0, Culture=neutral, PublicKeyToken=9aa73768fca6549e</Assembly>
+    <FullClassName>Archient.VisualStudio.Guidance.Templates.Wizards.BlankSolutionWizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>

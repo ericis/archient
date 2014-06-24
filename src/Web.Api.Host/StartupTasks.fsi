@@ -24,5 +24,6 @@ module StartupTasks =
     type ApiRouteDefaults = 
         { id : RouteParameter }
     
-    /// Registers the default HTTP Routes
-    val registerDefaultHttpRoutes : unit -> unit
+    /// <summary>Registers the default HTTP Routes</summary>
+    /// <param name="controllerNamespaces">The controller namespaces.</param>
+    val registerDefaultHttpRoutes : controllerNamespaces:seq<string> -> unit

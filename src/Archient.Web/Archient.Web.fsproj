@@ -58,7 +58,13 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <ItemGroup>
-    <Compile Include="ControllerTypes.fs" />
+    <EmbeddedResource Include="Resources.resx" />
+    <Compile Include="Resx.fs" />
+    <Compile Include="ApiControllerTypes.fs" />
+    <Compile Include="ViewModelTypes.fs" />
+    <Compile Include="ViewModels.fs" />
+    <Compile Include="Views.fs" />
+    <Compile Include="MvcControllerTypes.fs" />
     <Compile Include="StartupTasks.fs" />
     <Compile Include="ArchientApp.fs" />
     <None Include="packages.config" />

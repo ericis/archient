@@ -27,7 +27,8 @@ module StartupTasks =
             //// Facebook
 
             // Web API Routes
-            StartupTasks.registerDefaultHttpRoutes
+            fun () -> 
+                StartupTasks.registerDefaultHttpRoutes [ typeof<PagesController>.Namespace ]
             
             // MVC Filters
             StartupTasks.registerDefaultFilters
@@ -37,4 +38,7 @@ module StartupTasks =
                 StartupTasks.registerDefaultMvcRoutes [ typeof<HomeController>.Namespace ]
 
             //// Web Optimization Bundling
+
+            fun () ->
+                Routes.prettyPrint System.Web.Routing.RouteTable.Routes
         ]
