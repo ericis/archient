@@ -1,0 +1,613 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- IMPORTANT NOTE! After you change a value in this file, you will have to close and reopen the solution for the change to take effect. -->
+
+  <!-- Wintellect.TFSBuildNumber.targets - John Robbins - john@wintellect.com -->
+  <!-- Version 1.0  - November 8, 2009 -->
+  <!--
+        Version 1.01 - November 12, 2009 
+        Forgot to escape the semicolons when outputing the files.
+  -->
+  <!--
+        Version 1.02 - August 31, 2011
+        Now include Microsoft.TeamFoundation.Build.targets only if it's a 
+        TFS build so it's easier to include this file into regular VS projects
+  -->
+  <!--
+        Version 1.03 - September 9, 2011
+        In some cases pulling in the full Microsoft.TeamFoundation.Build.targets on
+        a full TFS Build can screw things up. I pulled out the one task I needed,
+        GetBuildProperties, and call it directly. Importing the whole file somehow
+        ended up clobbering the Compile task so no C# code got compiled.
+  -->
+  <!--
+        Version 1.03.Fork - April 24, 2012
+        Minor enhancements to John Robbins' MSBuild version helper tasks to customize to
+        offer versions for semantic versioning (SemVer), calendar-based versioning, and
+        CLR versioning. Also captures TFS build description to correlate to an automated
+        build or a specific developer build. Renamed file to TFSBuildNumber.targets.
+        Changes incorporated for use by US Airways.
+  -->
+  <!--
+        A set of pure MSBuild 4.0 tasks that generate build version information 
+        for a TFS Team Build in order to have your file versions match 
+        exactly the TFS build numbers. Everything is in this file, you don't 
+        need to install any other DLLs, assemblies, or magic on your TFS build 
+        server. MSBuild 4.0 really is quite wonderful!
+       
+        The idea behind using these task is to follow best practices of not 
+        checking in/out any assembly version files as part of a build. The 
+        version files are created every time you run a Team Build. If the 
+        version files aren't checked in, how will you do a build on a 
+        developer machine? You'll be OK, because when you call these tasks from  
+        a developer (AKA desktop build), it will still create the version files. 
+        However, instead of using a TFS build identifier, the version files will
+        be created with the following rules:
+            - If the version file already exists, it will not be created. For
+            TFS Builds, the file is always created.
+            - The build number will be based of the current date.
+            - The revision number is hard coded to 65534 to indicate it was a 
+            developer build. (If you are doing 65,535 or more builds in a 
+            day you have bigger problems than version files! :) )
+
+        These tasks can be integrated directly into your .csproj and .vcxproj files.
+        See http://www.wintellect.com/CS/blogs/jrobbins/archive/2011/09/05/tfs-2010-build-numbers-file-versions-from-inside-your-c-and-c-projects.aspx
+        for examples.
+  -->
+
+  <!--
+        License: Do whatever you wish with this and I hope you find it useful.
+        If you do use this code, I'd appreciate if you'd credit the original 
+        source.
+  -->
+
+  <PropertyGroup>
+    <!-- Figure out where the TFS build tasks are. -->
+    <!-- Figure out where I'm being called from, TFS Build or a developer 
+         machine. BuildUri and TeamFoundationServerUrl properties are the 
+         ones that tell me I'm running under TFS Build.-->
+    <WintellectBuildType>DEVELOPERBUILD</WintellectBuildType>
+    <WintellectBuildType Condition="'$(BuildUri)'!='' and '$(TeamFoundationServerUrl)'!=''">TFSBUILD</WintellectBuildType>
+
+    <EnableCSharpCodeGeneration Condition="'$(EnableCSharpCodeGeneration)'==''">true</EnableCSharpCodeGeneration>
+    <EnableVBCodeGeneration Condition="'$(EnableVBCodeGeneration)'==''">false</EnableVBCodeGeneration>
+    <EnableCPPCodeGeneration Condition="'$(EnableCPPCodeGeneration)'==''">false</EnableCPPCodeGeneration>
+    <EnableWiXCodeGeneration Condition="'$(EnableWiXCodeGeneration)'==''">false</EnableWiXCodeGeneration>
+    <EnableTextCodeGeneration Condition="'$(EnableTextCodeGeneration)'==''">false</EnableTextCodeGeneration>
+
+    <RemoveGeneratedFilesAfterBuild Condition="'$(RemoveGeneratedFilesAfterBuild)'==''">false</RemoveGeneratedFilesAfterBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TeamBuildRefPath)'==''">
+    <!-- Figure out where the TFS build tasks are. -->
+    <TeamBuildVersion Condition="'$(TeamBuildVersion)'==''">2010</TeamBuildVersion>
+    <TeamBuildRefPath Condition="'$(WintellectBuildType)'!='TFSBUILD'">$(VS100COMNTOOLS)..\IDE\PrivateAssemblies\</TeamBuildRefPath>
+    <TeamBuildRefPath Condition="'$(WintellectBuildType)'=='TFSBUILD' and '$(TeamBuildVersion)'=='2010'">$(ProgramFiles)\Microsoft Team Foundation Server 2010\Tools\</TeamBuildRefPath>
+    <TeamBuildRefPath Condition="'$(WintellectBuildType)'=='TFSBUILD' and '$(TeamBuildVersion)'=='Dev11'">$(ProgramFiles)\Microsoft Team Foundation Server Dev11\Tools\</TeamBuildRefPath>
+  </PropertyGroup>
+
+  <!-- Set appropriate defaults for all version files. -->
+  <PropertyGroup>
+    <!-- The output directory for all shared version files. -->
+    <SharedVersionOutputDirectory Condition=" '$(SharedVersionOutputDirectory)'=='' ">$([System.IO.Path]::Combine($(SolutionDir), $(BuildScriptsFolderName)))</SharedVersionOutputDirectory>
+    <!-- The name of the C# shared version file. -->
+    <CSharpAssemblyVersionFile Condition=" '$(CSharpAssemblyVersionFile)'=='' ">$(SharedVersionOutputDirectory)\AssemblyVersionInfo.cs</CSharpAssemblyVersionFile>
+    <!-- The name of the VB shared version file. -->
+    <VBAssemblyVersionFile Condition=" '$(VBAssemblyVersionFile)'=='' ">$(SharedVersionOutputDirectory)\AssemblyVersionInfo.vb</VBAssemblyVersionFile>
+    <!-- The name of the C++/CLI shared version file. -->
+    <CPPCLIAssemblyVersionFile Condition=" '$(CPPCLIAssemblyVersionFile)'=='' ">$(SharedVersionOutputDirectory)\AssemblyVersionInfo.cpp</CPPCLIAssemblyVersionFile>
+    <!-- The name of the C++ header shared version file. -->
+    <CPPAssemblyVersionFile Condition=" '$(CPPAssemblyVersionFile)'=='' ">$(SharedVersionOutputDirectory)\AssemblyVersionInfo.h</CPPAssemblyVersionFile>
+    <!-- The name of the WiX shared version file. -->
+    <WiXAssemblyVersionFile Condition=" '$(WiXAssemblyVersionFile)'=='' ">$(SharedVersionOutputDirectory)\AssemblyVersionInfo.wxi</WiXAssemblyVersionFile>
+    <!-- The name of the Text shared version file. -->
+    <TextAssemblyVersionFile Condition=" '$(TextAssemblyVersionFile)'=='' ">$(SharedVersionOutputDirectory)\AssemblyVersionInfo.txt</TextAssemblyVersionFile>
+  </PropertyGroup>
+
+  <!-- Pull in the TFS build components only if doing a full TFS Build. -->
+  <UsingTask TaskName="Microsoft.TeamFoundation.Build.Tasks.GetBuildProperties"
+             AssemblyFile="$(TeamBuildRefPath)\Microsoft.TeamFoundation.Build.ProcessComponents.dll"
+             Condition="'$(WintellectBuildType)'=='TFSBUILD'"/>
+
+  <!-- The one target needed from TFS Build to pull out the build information. -->
+  <Target Name="WintellectInitializeBuildProperties"
+          Condition="'$(WintellectBuildType)'=='TFSBUILD'">
+
+    <GetBuildProperties TeamFoundationServerUrl="$(TeamFoundationServerUrl)"
+                        BuildUri="$(BuildUri)"
+                        Condition=" '$(IsDesktopBuild)' != 'true' ">
+      <!-- I only need these two values so that's all I'll ask about. -->
+      <Output TaskParameter="BuildDefinitionName" PropertyName="BuildDefinitionName" />
+      <Output TaskParameter="BuildNumber" PropertyName="BuildNumber" />
+    </GetBuildProperties>
+    <Message Importance="high" Text="Hello Versioning: BuildUri=$(BuildUri)"/>
+
+  </Target>
+
+  <!-- 
+        The PrepareTFSBuildFileVersion/TFSBuildFileVersion targets build the string suitable
+        for using to generate an acceptable AssemblyFileVersion attribute with the exact
+        build being done by TFS Build.
+       
+        This assumes a format of $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r) 
+        for the build number format. Tweak if you are using a different format.
+       
+        For the code below, the $(BuildNumber) property from TFS Build will 
+        look like: Dev Branch Daily Build_20091117.14
+        The important properties output of this task are those that start with 
+        TFS and are shown below.
+        (Property)                 (Example Value)
+        Now                        2009-11-17 22:50:00
+        TFSFullBuildVersionString  3.1.21117.14
+        TFSBuildNumber             21117
+        TFSCalculatedYear          2
+        TFSBuildYear               2009
+        TFSBuildMonth              11
+        TFSBuildDay                17
+        TFSBuildRevision           14
+        TFSBuildHour               22
+        TFSBuildMinute             50
+        TFSBuildMinuteOfDay        1370
+  -->
+  <Target Name="PrepareTFSBuildFileVersion"
+          DependsOnTargets="WintellectInitializeBuildProperties">
+
+    <!-- Do the error checking to ensure the appropriate items are defined.-->
+    <Error Condition="'$(TFSMajorBuildNumber)'==''"
+           Text="TFSMajorBuildNumber is not defined."/>
+    <Error Condition="'$(TFSMinorBuildNumber)'==''"
+           Text="TFSMinorBuildNumber is not defined."/>
+
+    <PropertyGroup>
+      <!-- The separator string between the $(BuildDefinition) and the date revision.-->
+      <BuildDefSeparatorValue>_</BuildDefSeparatorValue>
+      <!-- The separator between the date and revision.-->
+      <DateVerSeparatorValue>.</DateVerSeparatorValue>
+
+      <CalendarVersionBaseDate Condition="'$(CalendarVersionBaseDate)'==''">$([System.DateTime]::Now)</CalendarVersionBaseDate>
+      <DateToday Condition="'$(DateToday)'==''">$([System.DateTime]::Today)</DateToday>
+      <TFSBuildDayOfYear>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).DayOfYear.ToString("0"))</TFSBuildDayOfYear>
+      <TFSBuildDayOfYear3>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).DayOfYear.ToString("000"))</TFSBuildDayOfYear3>
+      <!-- Now = 2009-11-17 22:50:00 => 22 -->
+      <TFSBuildHour>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Hour.ToString("00"))</TFSBuildHour>
+      <!-- Now = 2009-11-17 22:50:00 => 50 -->
+      <TFSBuildMinute>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Minute.ToString("00"))</TFSBuildMinute>
+      <!-- Now = 2009-11-17 22:50:00 => 1370 -->
+      <TFSBuildMinuteOfDay>$([System.Convert]::ToUInt16($([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Subtract($([System.Convert]::ToDateTime($(DateToday)))).TotalMinutes)))</TFSBuildMinuteOfDay>
+    </PropertyGroup>
+
+    <!-- The calculations when run on a TFS Build Server.-->
+    <PropertyGroup Condition="'$(WintellectBuildType)'=='TFSBUILD'">
+      <!-- Get where the timestamp starts -->
+      <tmpStartPosition>$([MSBuild]::Add($(BuildDefinitionName.Length), $(BuildDefSeparatorValue.Length)))</tmpStartPosition>
+      <!-- Get the date and version portion. ex: 20091117.14 -->
+      <tmpFullDateAndVersion>$(BuildNumber.Substring($(tmpStartPosition)))</tmpFullDateAndVersion>
+      <!-- Find the position where the date and version separator splits the string. -->
+      <tmpDateVerSepPos>$(tmpFullDateAndVersion.IndexOf($(DateVerSeparatorValue)))</tmpDateVerSepPos>
+      <!-- Grab the date. ex: 20091117 -->
+      <tmpFullBuildDate>$(tmpFullDateAndVersion.SubString(0,$(tmpDateVerSepPos)))</tmpFullBuildDate>
+      <!-- Bump past the separator. -->
+      <tmpVerStartPos>$([MSBuild]::Add($(tmpDateVerSepPos),1))</tmpVerStartPos>
+      <!-- Get the pieces so if someone wants to customize, they have them. -->
+      <TFSBuildYear>$(tmpFullBuildDate.SubString(0,4))</TFSBuildYear>
+      <TFSBuildYear2>$(tmpFullBuildDate.SubString(2,2))</TFSBuildYear2>
+      <TFSBuildMonth>$([System.Convert]::ToUInt16($(tmpFullBuildDate.SubString(4,2))))</TFSBuildMonth>
+      <TFSBuildMonth2>$(tmpFullBuildDate.SubString(4,2))</TFSBuildMonth2>
+      <TFSBuildDay>$([System.Convert]::ToUInt16($(tmpFullBuildDate.SubString(6,2))))</TFSBuildDay>
+      <TFSBuildDay2>$(tmpFullBuildDate.SubString(6,2))</TFSBuildDay2>
+      <!-- Get the revision string. ex: 14 -->
+      <TFSBuildRevision>$(tmpFullDateAndVersion.SubString($(tmpVerStartPos)))</TFSBuildRevision>
+      <!-- Dev Branch Daily Build_20091117.14 -->
+      <TFSBuildDescription>$(BuildNumber)_$(COMPUTERNAME)</TFSBuildDescription>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(WintellectBuildType)'=='DEVELOPERBUILD'">
+      <TFSBuildYear>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Year.ToString("0000"))</TFSBuildYear>
+      <TFSBuildYear2>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Year.ToString("0000").SubString(2,2))</TFSBuildYear2>
+      <TFSBuildMonth>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Month.ToString("0"))</TFSBuildMonth>
+      <TFSBuildMonth2>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Month.ToString("00"))</TFSBuildMonth2>
+      <TFSBuildDay>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Day.ToString("0"))</TFSBuildDay>
+      <TFSBuildDay2>$([System.Convert]::ToDateTime($(CalendarVersionBaseDate)).Day.ToString("00"))</TFSBuildDay2>
+      <DevelopmentBuildIndicator>alphadev</DevelopmentBuildIndicator>
+      <!-- alphadev111722 (22nd hour of Nov 17th) -->
+      <TFSBuildRevision>$(DevelopmentBuildIndicator)$(TFSBuildMonth2)$(TFSBuildDay2)$(TFSBuildHour)</TFSBuildRevision>
+      <!-- Dev Branch Daily Build_20091117.14 -->
+      <TFSBuildDescription>Developer Build_$(TFSBuildYear)$(TFSBuildMonth2)$(TFSBuildDay2)_$(COMPUTERNAME)</TFSBuildDescription>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <!-- This is the Excel calculation "=MOD(year-2001,6)" -->
+      <!-- That's what it looks like DevDiv is using for their calculations. -->
+      <TFSCalculatedYear>$([MSBuild]::Modulo($([MSBuild]::Subtract($(TFSBuildYear),2001)),6))</TFSCalculatedYear>
+
+      <TFSBuildNumber>$(TFSCalculatedYear)$(TFSBuildMonth2)$(TFSBuildDay2)</TFSBuildNumber>
+      <TFSPatchBuildNumber Condition="'$(TFSPatchBuildNumber)'==''">$(TFSBuildYear2)$(TFSBuildDayOfYear3)</TFSPatchBuildNumber>
+
+      <TFSFullBuildVersionString>$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSBuildNumber).$(TFSBuildRevision)</TFSFullBuildVersionString>
+      <TFSCommonLanguageRuntimeVersionString>$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).0.0</TFSCommonLanguageRuntimeVersionString>
+      <TFSSemanticVersionString Condition="'$(WintellectBuildType)'=='TFSBUILD'">$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSPatchBuildNumber).$(TFSBuildRevision)</TFSSemanticVersionString>
+      <TFSSemanticVersionString Condition="'$(WintellectBuildType)'=='DEVELOPERBUILD'">$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSPatchBuildNumber)-$(TFSBuildRevision)</TFSSemanticVersionString>
+      <TFSCalendarVersionString Condition="'$(WintellectBuildType)'=='TFSBUILD'">$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSBuildYear2)$(TFSBuildDayOfYear3).$(TFSBuildRevision)</TFSCalendarVersionString>
+      <TFSCalendarVersionString Condition="'$(WintellectBuildType)'=='DEVELOPERBUILD'">$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSBuildYear2)$(TFSBuildDayOfYear3).$(TFSBuildHour)</TFSCalendarVersionString>
+
+      <!-- Default mapping -->
+      <AssemblyTitleString>$(TFSBuildDescription)</AssemblyTitleString>
+      <AssemblyVersionString>$(TFSCommonLanguageRuntimeVersionString)</AssemblyVersionString>
+      <AssemblyFileVersionString>$(TFSCalendarVersionString)</AssemblyFileVersionString>
+      <AssemblyInformationalVersionString>$(TFSSemanticVersionString)</AssemblyInformationalVersionString>
+
+      <CurrentBuildVersionString>$(AssemblyFileVersionString)</CurrentBuildVersionString>
+      <LastBuildMatchesCurrentBuild Condition="'$(LastBuildMatchesCurrentBuild)'==''">false</LastBuildMatchesCurrentBuild>
+
+    </PropertyGroup>
+
+    <Message ContinueOnError="true" Importance="low" Text="Version information for this build:" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildNumber = $(TFSBuildNumber)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildYear = $(TFSBuildYear)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildYear2 = $(TFSBuildYear2)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildMonth = $(TFSBuildMonth)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildMonth2 = $(TFSBuildMonth2)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildDay = $(TFSBuildDay)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildDay2 = $(TFSBuildDay2)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildDayOfYear = $(TFSBuildDayOfYear)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildDayOfYear3 = $(TFSBuildDayOfYear3)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildHour = $(TFSBuildHour)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildMinute = $(TFSBuildMinute)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildMinuteOfDay = $(TFSBuildMinuteOfDay)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSCalculatedYear = $(TFSCalculatedYear)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildRevision = $(TFSBuildRevision)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSBuildDescription = $(TFSBuildDescription)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSFullBuildVersionString = $(TFSFullBuildVersionString)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSCommonLanguageRuntimeVersionString = $(TFSCommonLanguageRuntimeVersionString)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSSemanticVersionString = $(TFSSemanticVersionString)" />
+    <Message ContinueOnError="true" Importance="low" Text="TFSCalendarVersionString = $(TFSCalendarVersionString)" />
+
+    <Message ContinueOnError="true" Importance="normal" Text="CurrentBuildVersionString = $(CurrentBuildVersionString)" />
+    <Message ContinueOnError="true" Importance="normal" Text="LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+
+    <!-- Determine whether or not the last build version matches the current build version by inspecting the generated files -->
+
+    <!-- WiXCodeGeneration -->
+    <Message Condition="'$(EnableWiXCodeGeneration)'=='true' and !Exists($(WiXAssemblyVersionFile))" ContinueOnError="true" Importance="normal" Text="WiXAssemblyVersionFile does not exist" />
+    <ReadLinesFromFile ContinueOnError="true" Condition="'$(EnableWiXCodeGeneration)'=='true'" File="$(WiXAssemblyVersionFile)">
+      <Output TaskParameter="Lines" ItemName="WiXCodeGenerationBuildVersionFileContent"/>
+    </ReadLinesFromFile>
+    <CreateProperty Condition="'$(EnableWiXCodeGeneration)'=='true'"
+                    Value="@(WiXCodeGenerationBuildVersionFileContent)" >
+      <Output TaskParameter="Value" PropertyName="WiXCodeGenerationBuildVersionFileContentValue" />
+    </CreateProperty>
+    <CreateProperty Condition="'$(EnableWiXCodeGeneration)'=='true' and '$(LastBuildMatchesCurrentBuild)'=='false'"
+                    Value="$(WiXCodeGenerationBuildVersionFileContentValue.Contains($(CurrentBuildVersionString)))" >
+      <Output TaskParameter="Value" PropertyName="LastBuildMatchesCurrentBuild" />
+    </CreateProperty>
+    <Message Condition="'$(EnableWiXCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="WiXCodeGenerationBuildVersionFileContentValue = $(WiXCodeGenerationBuildVersionFileContentValue)" />
+    <Message Condition="'$(EnableWiXCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="WiXCodeGeneration LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+    <!-- TextCodeGeneration -->
+    <Message Condition="'$(EnableTextCodeGeneration)'=='true' and !Exists($(TextAssemblyVersionFile))" ContinueOnError="true" Importance="normal" Text="TextAssemblyVersionFile does not exist" />
+    <ReadLinesFromFile ContinueOnError="true" Condition="'$(EnableTextCodeGeneration)'=='true'" File="$(TextAssemblyVersionFile)">
+      <Output TaskParameter="Lines" ItemName="TextCodeGenerationBuildVersionFileContent"/>
+    </ReadLinesFromFile>
+    <CreateProperty Condition="'$(EnableTextCodeGeneration)'=='true'"
+                    Value="@(TextCodeGenerationBuildVersionFileContent)" >
+      <Output TaskParameter="Value" PropertyName="TextCodeGenerationBuildVersionFileContentValue" />
+    </CreateProperty>
+    <CreateProperty Condition="'$(EnableTextCodeGeneration)'=='true' and '$(LastBuildMatchesCurrentBuild)'=='false'"
+                    Value="$(TextCodeGenerationBuildVersionFileContentValue.Contains($(CurrentBuildVersionString)))" >
+      <Output TaskParameter="Value" PropertyName="LastBuildMatchesCurrentBuild" />
+    </CreateProperty>
+    <Message Condition="'$(EnableTextCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="TextCodeGenerationBuildVersionFileContentValue = $(TextCodeGenerationBuildVersionFileContentValue)" />
+    <Message Condition="'$(EnableTextCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="TextCodeGeneration LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+    <!-- CPPCodeGeneration -->
+    <Message Condition="'$(EnableCPPCodeGeneration)'=='true' and !Exists($(CPPCLIAssemblyVersionFile))" ContinueOnError="true" Importance="normal" Text="CPPCLIAssemblyVersionFile does not exist" />
+    <ReadLinesFromFile ContinueOnError="true" Condition="'$(EnableCPPCodeGeneration)'=='true'" File="$(CPPCLIAssemblyVersionFile)">
+      <Output TaskParameter="Lines" ItemName="CPPCodeGenerationBuildVersionFileContent"/>
+    </ReadLinesFromFile>
+    <CreateProperty Condition="'$(EnableCPPCodeGeneration)'=='true'"
+                    Value="@(CPPCodeGenerationBuildVersionFileContent)" >
+      <Output TaskParameter="Value" PropertyName="CPPCodeGenerationBuildVersionFileContentValue" />
+    </CreateProperty>
+    <CreateProperty Condition="'$(EnableCPPCodeGeneration)'=='true' and '$(LastBuildMatchesCurrentBuild)'=='false'"
+                    Value="$(CPPCodeGenerationBuildVersionFileContentValue.Contains($(CurrentBuildVersionString)))" >
+      <Output TaskParameter="Value" PropertyName="LastBuildMatchesCurrentBuild" />
+    </CreateProperty>
+    <Message Condition="'$(EnableCPPCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="CPPCodeGenerationBuildVersionFileContentValue = $(CPPCodeGenerationBuildVersionFileContentValue)" />
+    <Message Condition="'$(EnableCPPCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="CPPCodeGeneration LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+    <!-- VBCodeGeneration -->
+    <Message Condition="'$(EnableVBCodeGeneration)'=='true' and !Exists($(VBAssemblyVersionFile))" ContinueOnError="true" Importance="normal" Text="VBAssemblyVersionFile does not exist" />
+    <ReadLinesFromFile ContinueOnError="true" Condition="'$(EnableVBCodeGeneration)'=='true'" File="$(VBAssemblyVersionFile)">
+      <Output TaskParameter="Lines" ItemName="VBCodeGenerationBuildVersionFileContent"/>
+    </ReadLinesFromFile>
+    <CreateProperty Condition="'$(EnableVBCodeGeneration)'=='true'"
+                    Value="@(VBCodeGenerationBuildVersionFileContent)" >
+      <Output TaskParameter="Value" PropertyName="VBCodeGenerationBuildVersionFileContentValue" />
+    </CreateProperty>
+    <CreateProperty Condition="'$(EnableVBCodeGeneration)'=='true' and '$(LastBuildMatchesCurrentBuild)'=='false'"
+                    Value="$(VBCodeGenerationBuildVersionFileContentValue.Contains($(CurrentBuildVersionString)))" >
+      <Output TaskParameter="Value" PropertyName="LastBuildMatchesCurrentBuild" />
+    </CreateProperty>
+    <Message Condition="'$(EnableVBCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="VBCodeGenerationBuildVersionFileContentValue = $(VBCodeGenerationBuildVersionFileContentValue)" />
+    <Message Condition="'$(EnableVBCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="VBCodeGeneration LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+    <!-- CSharpCodeGeneration -->
+    <Message Condition="'$(EnableCSharpCodeGeneration)'=='true' and !Exists($(CSharpAssemblyVersionFile))" ContinueOnError="true" Importance="normal" Text="CSharpAssemblyVersionFile does not exist" />
+    <ReadLinesFromFile ContinueOnError="true" Condition="'$(EnableCSharpCodeGeneration)'=='true'" File="$(CSharpAssemblyVersionFile)">
+      <Output TaskParameter="Lines" ItemName="CSharpCodeGenerationBuildVersionFileContent"/>
+    </ReadLinesFromFile>
+    <CreateProperty Condition="'$(EnableCSharpCodeGeneration)'=='true'"
+                    Value="@(CSharpCodeGenerationBuildVersionFileContent)" >
+      <Output TaskParameter="Value" PropertyName="CSharpCodeGenerationBuildVersionFileContentValue" />
+    </CreateProperty>
+    <CreateProperty Condition="'$(EnableCSharpCodeGeneration)'=='true' and '$(LastBuildMatchesCurrentBuild)'=='false'"
+                    Value="$(CSharpCodeGenerationBuildVersionFileContentValue.Contains($(CurrentBuildVersionString)))">
+      <Output TaskParameter="Value" PropertyName="LastBuildMatchesCurrentBuild" />
+    </CreateProperty>
+    <Message Condition="'$(EnableCSharpCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="CSharpCodeGenerationBuildVersionFileContentValue = $(CSharpCodeGenerationBuildVersionFileContentValue)" />
+    <Message Condition="'$(EnableCSharpCodeGeneration)'=='true'" ContinueOnError="true" Importance="normal"
+             Text="CSharpCodeGeneration LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+
+    <!-- Do some error checking as empty properties screw up everything. -->
+    <Error Condition="'$(TFSBuildNumber)'==''"
+           Text="Error building the TFSBuildNumber property"/>
+    <Error Condition="'$(TFSCalculatedYear)'==''"
+           Text="Error building the TFSCalculatedYear property"/>
+    <Error Condition="'$(TFSBuildDay)'==''"
+           Text="Error building the TFSBuildDay property"/>
+    <Error Condition="'$(TFSBuildMonth)'==''"
+           Text="Error building the TFSBuildMonth property"/>
+    <Error Condition="'$(TFSBuildYear)'==''"
+           Text="Error building the TFSBuildYear property"/>
+    <Error Condition="'$(TFSBuildYear2)'==''"
+           Text="Error building the TFSBuildYear2 property"/>
+    <Error Condition="'$(TFSBuildRevision)'==''"
+           Text="Error building the TFSBuildRevision property"/>
+    <Error Condition="'$(TFSBuildDescription)'==''"
+           Text="Error building the TFSBuildDescription property"/>
+    <Error Condition="'$(TFSFullBuildVersionString)'==''"
+           Text="Error building the TFSFullBuildVersionString property"/>
+    <Error Condition="'$(TFSCommonLanguageRuntimeVersionString)'==''"
+           Text="Error building the TFSCommonLanguageRuntimeVersionString property"/>
+    <Error Condition="'$(TFSSemanticVersionString)'==''"
+           Text="Error building the TFSSemanticVersionString property"/>
+    <Error Condition="'$(TFSCalendarVersionString)'==''"
+           Text="Error building the TFSCalendarVersionString property"/>
+
+  </Target>
+
+  <Target Name="BeforeWriteSharedAssemblyVersionFile">
+    <Message ContinueOnError="true" Importance="normal" Text="Version information for this build:" />
+    <Message ContinueOnError="true" Importance="normal" Text="AssemblyTitleString = $(AssemblyTitleString)" />
+    <Message ContinueOnError="true" Importance="normal" Text="AssemblyVersionString = $(AssemblyVersionString)" />
+    <Message ContinueOnError="true" Importance="normal" Text="AssemblyFileVersionString = $(AssemblyFileVersionString)" />
+    <Message ContinueOnError="true" Importance="normal" Text="AssemblyInformationalVersionString = $(AssemblyInformationalVersionString)" />
+
+    <Message ContinueOnError="true" Importance="normal" Text="CurrentBuildVersionString = $(CurrentBuildVersionString)" />
+    <Message ContinueOnError="true" Importance="normal" Text="LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+
+    <!-- Do some error checking as empty properties screw up everything. -->
+    <Error Condition="'$(AssemblyTitleString)'==''"
+           Text="Error building the AssemblyTitleString property"/>
+    <Error Condition="'$(AssemblyVersionString)'==''"
+           Text="Error building the AssemblyVersionString property"/>
+    <Error Condition="'$(AssemblyFileVersionString)'==''"
+           Text="Error building the AssemblyFileVersionString property"/>
+    <Error Condition="'$(AssemblyInformationalVersionString)'==''"
+           Text="Error building the AssemblyInformationalVersionString property"/>
+  </Target>
+
+  <Target Name="WriteSharedCSharpAssemblyVersionFile"
+          DependsOnTargets="TFSBuildFileVersion;BeforeWriteSharedAssemblyVersionFile"
+          Condition="'$(EnableCSharpCodeGeneration)' == 'true' and '$(LastBuildMatchesCurrentBuild)' == 'false'">
+    <!--Condition="('$(WintellectBuildType)'=='TFSBUILD') or 
+                (('$(WintellectBuildType)'=='DEVELOPERBUILD') and 
+                 (!Exists($(CSharpAssemblyVersionFile))))">-->
+
+    <Message ContinueOnError="true" Importance="normal" Text="WriteSharedCSharpAssemblyVersionFile LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+    <Message ContinueOnError="true" Importance="normal" Text="Writing Assembly Version Information to $(CSharpAssemblyVersionFile)" />
+
+    <ItemGroup>
+      <CSharpLines Include="
+// &lt;auto-generated/&gt;
+// This file auto generated by TFS Build Number targets.
+// Brought to you by the numbers $(TFSMajorBuildNumber) and $(TFSMinorBuildNumber).
+using System.Reflection%3B
+
+[assembly: AssemblyTitle(&quot;$(AssemblyTitleString)&quot;)]
+[assembly: AssemblyVersion(&quot;$(AssemblyVersionString)&quot;)]
+[assembly: AssemblyFileVersion(&quot;$(AssemblyFileVersionString)&quot;)]
+[assembly: AssemblyInformationalVersion(&quot;$(AssemblyInformationalVersionString)&quot;)]"/>
+    </ItemGroup>
+
+    <!-- Reset file attributes before attempting to overwrite an existing file. -->
+    <Exec Condition="Exists($(CSharpAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(CSharpAssemblyVersionFile)&quot;" />
+
+    <WriteLinesToFile Overwrite="true"
+                      File="$(CSharpAssemblyVersionFile)"
+                      Lines="@(CSharpLines)"
+                      Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="WriteSharedVBAssemblyVersionFile"
+          DependsOnTargets="TFSBuildFileVersion;BeforeWriteSharedAssemblyVersionFile"
+          Condition="$(EnableVBCodeGeneration) == true and '$(LastBuildMatchesCurrentBuild)' == 'false'">
+    <!--Condition="('$(WintellectBuildType)'=='TFSBUILD') or 
+                (('$(WintellectBuildType)'=='DEVELOPERBUILD') and 
+                 (!Exists($(VBAssemblyVersionFile))))">-->
+
+    <Message ContinueOnError="true" Importance="normal" Text="WriteSharedVBAssemblyVersionFile LastBuildMatchesCurrentBuild = $(LastBuildMatchesCurrentBuild)" />
+
+    <Message ContinueOnError="true" Importance="normal" Text="Writing Assembly Version Information to $(VBAssemblyVersionFile)" />
+
+    <ItemGroup>
+      <VBLines Include="
+' This file auto generated by TFS Build Number targets.
+' Brought to you by the numbers $(TFSMajorBuildNumber) and $(TFSMinorBuildNumber).
+using System.Reflection
+&lt;assembly: AssemblyTitle(&quot;$(AssemblyTitleString)&quot;)&gt;
+&lt;assembly: AssemblyVersion(&quot;$(AssemblyVersionString)&quot;)&gt;
+&lt;assembly: AssemblyFileVersion(&quot;$(AssemblyFileVersionString)&quot;)&gt;
+&lt;assembly: AssemblyInformationalVersion(&quot;$(AssemblyInformationalVersionString)&quot;)&gt;"/>
+    </ItemGroup>
+
+    <!-- Reset file attributes before attempting to overwrite an existing file. -->
+    <Exec Condition="Exists($(VBAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(VBAssemblyVersionFile)&quot;" />
+
+    <WriteLinesToFile Overwrite="true"
+                      File="$(VBAssemblyVersionFile)"
+                      Lines="@(VBLines)"
+                      Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="WriteSharedCPPCLIAssemblyVersionFile"
+          DependsOnTargets="TFSBuildFileVersion;BeforeWriteSharedAssemblyVersionFile"
+          Condition="$(EnableCPPCodeGeneration) == true and '$(LastBuildMatchesCurrentBuild)' == 'false'">
+    <!--Condition="('$(WintellectBuildType)'=='TFSBUILD') or 
+                (('$(WintellectBuildType)'=='DEVELOPERBUILD') and 
+                 (!Exists($(CPPCLIAssemblyVersionFile))))">-->
+
+    <Message ContinueOnError="true" Importance="normal" Text="Writing Assembly Version Information to $(CPPCLIAssemblyVersionFile)" />
+
+    <ItemGroup>
+      <CPPCLILines Include="
+// This file auto generated by TFS Build Number targets.
+// Brought to you by the numbers $(TFSMajorBuildNumber) and $(TFSMinorBuildNumber).
+#include &quot;stdafx.h&quot;
+
+using namespace System::Reflection%3B
+[assembly:AssemblyTitle ( &quot;$(AssemblyTitleString)&quot; )]
+[assembly:AssemblyVersion ( &quot;$(AssemblyVersionString)&quot; )]
+[assembly:AssemblyFileVersion ( &quot;$(AssemblyFileVersionString)&quot; )]
+[assembly:AssemblyInformationalVersion ( &quot;$(AssemblyInformationalVersionString)&quot; )]"/>
+    </ItemGroup>
+
+    <!-- Reset file attributes before attempting to overwrite an existing file. -->
+    <Exec Condition="Exists($(CPPCLIAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(CPPCLIAssemblyVersionFile)&quot;" />
+
+    <WriteLinesToFile Overwrite="true"
+                      File="$(CPPCLIAssemblyVersionFile)"
+                      Lines="@(CPPCLILines)"
+                      Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="WriteSharedCPPAssemblyVersionFile"
+          DependsOnTargets="TFSBuildFileVersion;BeforeWriteSharedAssemblyVersionFile"
+          Condition="$(EnableCPPCodeGeneration) == true and '$(LastBuildMatchesCurrentBuild)' == 'false'">
+    <!--Condition="('$(WintellectBuildType)'=='TFSBUILD') or 
+                (('$(WintellectBuildType)'=='DEVELOPERBUILD') and 
+                 (!Exists($(CPPAssemblyVersionFile))))">-->
+
+    <Message ContinueOnError="true" Importance="normal" Text="Writing Assembly Version Information to $(CPPAssemblyVersionFile)" />
+
+    <ItemGroup>
+      <CPPLines Include="
+// This file auto generated by TFS Build Number targets.
+// Brought to you by the numbers $(TFSMajorBuildNumber) and $(TFSMinorBuildNumber).
+#ifndef _SHAREDFILEVERSION_H
+#define _SHAREDFILEVERSION_H
+
+#define szMajorMinor                &quot;$(TFSMajorBuildNumber).$(TFSMinorBuildNumber)&quot;
+#define szMajorMinorBuild           &quot;$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSBuildNumber)&quot;
+#define szMajorMinorBuildRevision   &quot;$(TFSFullBuildVersionString)&quot;
+
+#define rcMajor    $(TFSMajorBuildNumber)
+#define rcMinor    $(TFSMinorBuildNumber)
+#define rcBuild    $(TFSBuildNumber)
+#define rcRevision $(TFSBuildRevision)
+
+#endif // _SHAREDFILEVERSION_H"/>
+    </ItemGroup>
+
+    <!-- Reset file attributes before attempting to overwrite an existing file. -->
+    <Exec Condition="Exists($(CPPAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(CPPAssemblyVersionFile)&quot;"/>
+
+    <WriteLinesToFile Overwrite="true"
+                      File="$(CPPAssemblyVersionFile)"
+                      Lines="@(CPPLines)"
+                      Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="WriteSharedWiXAssemblyVersionFile"
+          DependsOnTargets="TFSBuildFileVersion;BeforeWriteSharedAssemblyVersionFile"
+          Condition="$(EnableWiXCodeGeneration) == true and '$(LastBuildMatchesCurrentBuild)' == 'false'">
+    <!--Condition="('$(WintellectBuildType)'=='TFSBUILD') or 
+                (('$(WintellectBuildType)'=='DEVELOPERBUILD') and 
+                 (!Exists($(WiXAssemblyVersionFile))))">-->
+
+    <Message ContinueOnError="true" Importance="normal" Text="Writing Assembly Version Information to $(WiXAssemblyVersionFile)" />
+
+    <ItemGroup>
+      <WiXLines Include="
+&lt;!-- This file auto generated by TFS Build Number targets. --&gt;
+&lt;!-- Brought to you by the numbers $(TFSMajorBuildNumber) and $(TFSMinorBuildNumber). --&gt;
+&lt;Include xmlns=&quot;http://schemas.microsoft.com/wix/2006/wi&quot;&gt;
+  &lt;?define InstallVersion=&quot;$(TFSFullBuildVersionString)&quot;?&gt;
+&lt;/Include&gt;
+"/>
+    </ItemGroup>
+
+    <!-- Reset file attributes before attempting to overwrite an existing file. -->
+    <Exec Condition="Exists($(WiXAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(WiXAssemblyVersionFile)&quot;" />
+
+    <WriteLinesToFile Overwrite="true"
+                      File="$(WiXAssemblyVersionFile)"
+                      Lines="@(WiXLines)"
+                      Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="WriteSharedTextAssemblyVersionFile"
+          DependsOnTargets="TFSBuildFileVersion;BeforeWriteSharedAssemblyVersionFile"
+          Condition="$(EnableTextCodeGeneration) == true and '$(LastBuildMatchesCurrentBuild)' == 'false'">
+    <!--Condition="('$(WintellectBuildType)'=='TFSBUILD') or 
+                (('$(WintellectBuildType)'=='DEVELOPERBUILD') and 
+                 (!Exists($(TextAssemblyVersionFile))))">-->
+
+    <Message ContinueOnError="true" Importance="normal" Text="Writing Assembly Version Information to $(TextAssemblyVersionFile)" />
+
+    <ItemGroup>
+      <TXTLines Include="$(TFSFullBuildVersionString)"/>
+    </ItemGroup>
+
+    <!-- Reset file attributes before attempting to overwrite an existing file. -->
+    <Exec Condition="Exists($(TextAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(TextAssemblyVersionFile)&quot;" />
+
+    <WriteLinesToFile Overwrite="true"
+                      File="$(TextAssemblyVersionFile)"
+                      Lines="@(TXTLines)"
+                      Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="AfterBuildSharedAssemblyVersionFiles">
+
+    <!-- Conditionally reset generated file attributes if we aren't deleting the files. -->
+    <!--
+        <Exec Condition="$(RemoveGeneratedFilesAfterBuild) == false and Exists($(CSharpAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(CSharpAssemblyVersionFile)&quot;"/>
+        <Exec Condition="$(RemoveGeneratedFilesAfterBuild) == false and Exists($(VBAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(VBAssemblyVersionFile)&quot;"/>
+        <Exec Condition="$(RemoveGeneratedFilesAfterBuild) == false and Exists($(CPPCLIAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(CPPCLIAssemblyVersionFile)&quot;"/>
+        <Exec Condition="$(RemoveGeneratedFilesAfterBuild) == false and Exists($(CPPAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(CPPAssemblyVersionFile)&quot;"/>
+        <Exec Condition="$(RemoveGeneratedFilesAfterBuild) == false and Exists($(WiXAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(WiXAssemblyVersionFile)&quot;"/>
+        <Exec Condition="$(RemoveGeneratedFilesAfterBuild) == false and Exists($(TextAssemblyVersionFile))" Command="%windir%\System32\attrib -R -A &quot;$(TextAssemblyVersionFile)&quot;"/>
+        -->
+
+    <!-- Conditionally delete the generated files. -->
+    <Delete Condition="$(RemoveGeneratedFilesAfterBuild) == true and $(EnableCSharpCodeGeneration) == true" Files="$(CSharpAssemblyVersionFile)" />
+    <Delete Condition="$(RemoveGeneratedFilesAfterBuild) == true and $(EnableVBCodeGeneration) == true" Files="$(VBAssemblyVersionFile)" />
+    <Delete Condition="$(RemoveGeneratedFilesAfterBuild) == true and $(EnableCPPCodeGeneration) == true" Files="$(CPPCLIAssemblyVersionFile);$(CPPAssemblyVersionFile)" />
+    <Delete Condition="$(RemoveGeneratedFilesAfterBuild) == true and $(EnableWiXCodeGeneration) == true" Files="$(WiXAssemblyVersionFile)" />
+    <Delete Condition="$(RemoveGeneratedFilesAfterBuild) == true and $(EnableTextCodeGeneration) == true" Files="$(TextAssemblyVersionFile)" />
+  </Target>
+</Project>

@@ -21,6 +21,9 @@
 
   <TemplateContent>
     <ProjectCollection>
+      <ProjectTemplateLink ProjectName="SolutionItems.Build">
+        BlankSolution\_build\SolutionItems.vstemplate
+      </ProjectTemplateLink>
       <ProjectTemplateLink ProjectName="SolutionItems.NuGet">
         BlankSolution\_nuget\SolutionItems.vstemplate
       </ProjectTemplateLink>

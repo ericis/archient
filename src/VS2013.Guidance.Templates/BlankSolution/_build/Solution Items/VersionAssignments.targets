@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- IMPORTANT NOTE! After you change a value in this file, you will have to close and reopen the solution for the change to take effect. -->
+    <Target Name="TFSBuildFileVersion" DependsOnTargets="PrepareTFSBuildFileVersion">
+        <PropertyGroup>
+            <!-- Customize the assignment of version information and build description as desired. -->
+            <!--
+            <TFSFullBuildVersionString>$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSBuildNumber).$(TFSBuildRevision)</TFSFullBuildVersionString>
+            <TFSCommonLanguageRuntimeVersionString>$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).0.0</TFSCommonLanguageRuntimeVersionString>
+            <TFSSemanticVersionString>$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSPatchBuildNumber).$(TFSBuildRevision)</TFSSemanticVersionString>
+            <TFSCalendarVersionString>$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).$(TFSBuildYear2)$(TFSBuildDayOfYear3).$(TFSBuildRevision)</TFSCalendarVersionString>
+
+            Default assignments that are mapped to assembly attributes in generated code file(s):
+            <AssemblyTitleString>$(TFSBuildDescription)</AssemblyTitleString>
+            <AssemblyVersionString>$(TFSCommonLanguageRuntimeVersionString)</AssemblyVersionString>
+            <AssemblyFileVersionString>$(TFSCalendarVersionString)</AssemblyFileVersionString>
+            <AssemblyInformationalVersionString>$(TFSSemanticVersionString)</AssemblyInformationalVersionString>
+            -->
+            <!-- Override default mapping as desired -->
+            <!--
+            <AssemblyTitleString>$(TFSBuildDescription)</AssemblyTitleString>
+            <AssemblyVersionString>$(TFSCommonLanguageRuntimeVersionString)</AssemblyVersionString>
+            <AssemblyFileVersionString>$(TFSCalendarVersionString)</AssemblyFileVersionString>
+            <AssemblyInformationalVersionString>$(TFSSemanticVersionString)</AssemblyInformationalVersionString>
+            -->
+        </PropertyGroup>
+    </Target>
+</Project>

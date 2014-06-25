@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>.nuget Solution Folder</Name>
-    <Description>Creates a .nuget solution folder.</Description>
-    <TemplateID>Archient.CSharp.NuGetSolutionFolder</TemplateID>
+    <Name>.build Solution Folder</Name>
+    <Description>Creates a .build solution folder.</Description>
+    <TemplateID>Archient.CSharp.BuildSolutionFolder</TemplateID>
     <ProjectType>CSharp</ProjectType>
     <SortOrder>10</SortOrder>
     <CreateNewFolder>false</CreateNewFolder>
@@ -16,16 +15,18 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
     <!-- Needed for linked files referenced in project file to work properly -->
-    <CreateInPlace>true</CreateInPlace>
+    <CreateInPlace>false</CreateInPlace>
   </TemplateData>
 
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" ReplaceParameters="true">
       <Folder Name="Properties" TargetFolderName="Properties">
-        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs" OpenInEditor="false">AssemblyInfo.cs</ProjectItem>
       </Folder>
       <Folder Name="Solution Items" TargetFolderName="Solution Items">
-        <ProjectItem ReplaceParameters="false" TargetFileName="NuGet.exe">NuGet.exe</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="TFSBuildNumber.targets" OpenInEditor="false">TFSBuildNumber.targets</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="VersionAssignments.targets" OpenInEditor="false">VersionAssignments.targets</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="VersionSettings.targets" OpenInEditor="false">VersionSettings.targets</ProjectItem>
       </Folder>
     </Project>
   </TemplateContent>

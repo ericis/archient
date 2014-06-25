@@ -33,36 +33,6 @@
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Release\VS2013.Guidance.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
-    <Reference Include="mscorlib" />
-    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.fs">
-      <Link>GlobalAssemblyInfo.fs</Link>
-    </Compile>
-    <Compile Include="..\SharedAssemblyFileVersion.fs">
-      <Link>SharedAssemblyFileVersion.fs</Link>
-    </Compile>
-    <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="BlankSolutionWizard.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Microsoft Development Environment 8.0 %28Version 7.0 Object Model%29">
-      <Guid>{80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2}</Guid>
-      <VersionMajor>8</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <Isolated>False</Isolated>
-      <WrapperTool>primary</WrapperTool>
-    </COMReference>
-  </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>
@@ -80,6 +50,37 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <Import Project="..\Versions.Settings.targets" />
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.fs">
+      <Link>GlobalAssemblyInfo.fs</Link>
+    </Compile>
+    <Compile Include="..\SharedAssemblyFileVersion.fs">
+      <Link>SharedAssemblyFileVersion.fs</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="BlankSolutionWizard.fs" />
+    <COMReference Include="Microsoft Development Environment 8.0 %28Version 7.0 Object Model%29">
+      <Guid>{80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <Isolated>False</Isolated>
+      <WrapperTool>primary</WrapperTool>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
