@@ -24,14 +24,7 @@
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
       </Folder>
-      <Folder Name="Solution Items" TargetFolderName="Solution Items">
-        <ProjectItem ReplaceParameters="false" TargetFileName="NuGet.exe">NuGet.exe</ProjectItem>
-      </Folder>
+      <ProjectItem ReplaceParameters="false" TargetFileName="packages.config">packages.config</ProjectItem>
     </Project>
   </TemplateContent>
-
-  <WizardExtension>
-    <Assembly>Archient.VisualStudio.Guidance, Version=0.0.0.0, Culture=neutral, PublicKeyToken=9aa73768fca6549e</Assembly>
-    <FullClassName>Archient.VisualStudio.Guidance.Templates.Wizards.BlankSolutionWizard</FullClassName>
-  </WizardExtension>
 </VSTemplate>
