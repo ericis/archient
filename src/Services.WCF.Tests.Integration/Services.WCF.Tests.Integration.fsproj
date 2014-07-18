@@ -5,13 +5,16 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d0ef0621-6556-4c1b-a892-f192b00b5dc7</ProjectGuid>
+    <ProjectGuid>ada1c61e-d2f8-4645-914a-a87c8aeb23f2</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Web.Host</RootNamespace>
-    <AssemblyName>Archient.Web.Host</AssemblyName>
+    <RootNamespace>Services.WCF.Tests.Integration</RootNamespace>
+    <AssemblyName>Archient.Services.Wcf.Tests.Integration</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
-    <Name>Web.Host</Name>
+    <Name>Services.WCF.Tests.Integration</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +24,8 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\Archient.Web.Host.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +34,8 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\Archient.Web.Host.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -48,18 +53,23 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.fs">
-      <Link>GlobalAssemblyInfo.fs</Link>
-    </Compile>
-    <Compile Include="..\SharedAssemblyFileVersion.fs">
-      <Link>SharedAssemblyFileVersion.fs</Link>
-    </Compile>
-    <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="WebApp.fs" />
-    <None Include="Web.Host.nuspec" />
+    <None Include="packages.config" />
+    <Compile Include="ServiceBaseTestFixture.fs" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -67,9 +77,29 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="xunit">
+      <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
-  <Import Project="..\Versions.Settings.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Services.Clients.WCF\Services.Clients.WCF.fsproj">
+      <Name>Services.Clients.WCF</Name>
+      <Project>{6353af21-ddaf-4bf1-b7b4-ab898bab7ca1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.WCF\Services.WCF.fsproj">
+      <Name>Services.WCF</Name>
+      <Project>{25aa516d-799e-48c8-ac2d-e80803aca864}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Xunit\Test.Xunit.fsproj">
+      <Name>Test.Xunit</Name>
+      <Project>{c03731f8-ce9f-4e15-a14d-99230fe7732e}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

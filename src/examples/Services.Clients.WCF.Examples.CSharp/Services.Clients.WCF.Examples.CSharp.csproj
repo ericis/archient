@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExampleTests.cs" />
+    <Compile Include="TestService.cs" />
     <Compile Include="ITestService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,6 +54,10 @@
     <ProjectReference Include="..\..\Services.Clients.WCF\Services.Clients.WCF.fsproj">
       <Project>{6353af21-ddaf-4bf1-b7b4-ab898bab7ca1}</Project>
       <Name>Services.Clients.WCF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services.WCF\Services.WCF.fsproj">
+      <Project>{25aa516d-799e-48c8-ac2d-e80803aca864}</Project>
+      <Name>Services.WCF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Test.Xunit\Test.Xunit.fsproj">
       <Project>{c03731f8-ce9f-4e15-a14d-99230fe7732e}</Project>

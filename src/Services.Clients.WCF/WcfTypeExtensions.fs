@@ -13,7 +13,7 @@ type WcfClientExtensions () =
     /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The service container.</returns>
     [<Extension>]
-    static member Create<'TService>(tag:IUseService<'TService>, configEndpointName) =
+    static member ServiceCreate<'TService>(tag:IUseService<'TService>, configEndpointName) =
         let svc = WCF.createFromEndpoint<'TService> configEndpointName
 
         (new ServiceContainer<_>(svc)) :> IServiceContainer<_>
@@ -23,7 +23,7 @@ type WcfClientExtensions () =
     /// <param name="container">The container instance containing the service instance.</param>
     /// <param name="operation">The WCF service operation.</param>
     [<Extension>]
-    static member Call<'TService>(container:IServiceContainer<'TService>, operation:Action<'TService>) =
+    static member ServiceCall<'TService>(container:IServiceContainer<'TService>, operation:Action<'TService>) =
         container.InternalService |> WCF.callAndForget (fun svc -> operation.Invoke(svc))
 
     /// <summary>Sends the specified <c>request</c> to a WCF service operation specified by <c>operation</c>.</summary>
@@ -33,7 +33,7 @@ type WcfClientExtensions () =
     /// <param name="request">The request to be sent to the service operation.</param>
     /// <param name="operation">The WCF service operation.</param>
     [<Extension>]
-    static member Send<'TService,'TRequest>(container:IServiceContainer<'TService>, request:'TRequest, operation:Action<'TService,'TRequest>) =
+    static member ServiceSend<'TService,'TRequest>(container:IServiceContainer<'TService>, request:'TRequest, operation:Action<'TService,'TRequest>) =
         container.InternalService |> WCF.callAndForget (fun svc -> operation.Invoke(svc, request))
         
     /// <summary>Calls and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
@@ -43,7 +43,7 @@ type WcfClientExtensions () =
     /// <param name="operation">The WCF service operation.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
-    static member Receive<'TService,'TResponse>(container:IServiceContainer<'TService>, operation:Func<'TService,'TResponse>) =
+    static member ServiceReceive<'TService,'TResponse>(container:IServiceContainer<'TService>, operation:Func<'TService,'TResponse>) =
         container.InternalService |> WCF.callAndReceive (fun svc -> operation.Invoke(svc))
         
     /// <summary>Sends the specified <c>request</c> and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
@@ -55,7 +55,7 @@ type WcfClientExtensions () =
     /// <param name="operation">The WCF service operation.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
-    static member SendAndReceive<'TService,'TRequest,'TResponse>(container:IServiceContainer<'TService>, request:'TRequest, operation:Func<'TService,'TRequest,'TResponse>) =
+    static member ServiceSendAndReceive<'TService,'TRequest,'TResponse>(container:IServiceContainer<'TService>, request:'TRequest, operation:Func<'TService,'TRequest,'TResponse>) =
         container.InternalService |> WCF.callAndReceive (fun svc -> operation.Invoke(svc, request))
         
     /// <summary>Creates a WCF service client channel and calls a service operation specified by <c>operation</c>.</summary>
@@ -64,9 +64,9 @@ type WcfClientExtensions () =
     /// <param name="operation">The WCF service operation.</param>
     /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     [<Extension>]
-    static member CreateAndCall<'TService>(tag:IUseService<'TService>, operation:Action<'TService>, configEndpointName) =
-        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
-        WcfClientExtensions.Call<_>(svc, operation)
+    static member ServiceCreateAndCall<'TService>(tag:IUseService<'TService>, operation:Action<'TService>, configEndpointName) =
+        use svc = WcfClientExtensions.ServiceCreate<_>(tag, configEndpointName)
+        WcfClientExtensions.ServiceCall<_>(svc, operation)
         
     /// <summary>Creates a WCF service client channel and sends the specified <c>request</c> to a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -76,9 +76,9 @@ type WcfClientExtensions () =
     /// <param name="operation">The WCF service operation.</param>
     /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     [<Extension>]
-    static member CreateAndSend<'TService,'TRequest>(tag:IUseService<'TService>, request:'TRequest, operation:Action<'TService,'TRequest>, configEndpointName) =
-        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
-        WcfClientExtensions.Send<_,_>(svc, request, operation)
+    static member ServiceCreateAndSend<'TService,'TRequest>(tag:IUseService<'TService>, request:'TRequest, operation:Action<'TService,'TRequest>, configEndpointName) =
+        use svc = WcfClientExtensions.ServiceCreate<_>(tag, configEndpointName)
+        WcfClientExtensions.ServiceSend<_,_>(svc, request, operation)
         
     /// <summary>Creates a WCF service client channel and calls and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -88,9 +88,9 @@ type WcfClientExtensions () =
     /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
-    static member CreateAndReceive<'TService,'TResponse>(tag:IUseService<'TService>, operation:Func<'TService,'TResponse>, configEndpointName) =
-        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
-        WcfClientExtensions.Receive<_,_>(svc, operation)
+    static member ServiceCreateAndReceive<'TService,'TResponse>(tag:IUseService<'TService>, operation:Func<'TService,'TResponse>, configEndpointName) =
+        use svc = WcfClientExtensions.ServiceCreate<_>(tag, configEndpointName)
+        WcfClientExtensions.ServiceReceive<_,_>(svc, operation)
         
     /// <summary>Creates a WCF service client channel and sends the specified <c>request</c> and receives a response from a WCF service operation specified by <c>operation</c>.</summary>
     /// <typeparam name="TService">The type of the WCF service.</typeparam>
@@ -102,6 +102,6 @@ type WcfClientExtensions () =
     /// <param name="configEndpointName">The name of the service endpoint in configuration.</param>
     /// <returns>The service operation's response.</returns>
     [<Extension>]
-    static member CreateSendAndReceive<'TService,'TRequest,'TResponse>(tag:IUseService<'TService>, request:'TRequest, operation:Func<'TService,'TRequest,'TResponse>, configEndpointName) =
-        use svc = WcfClientExtensions.Create<_>(tag, configEndpointName)
-        WcfClientExtensions.SendAndReceive<_,_,_>(svc, request, operation)
+    static member ServiceCreateSendAndReceive<'TService,'TRequest,'TResponse>(tag:IUseService<'TService>, request:'TRequest, operation:Func<'TService,'TRequest,'TResponse>, configEndpointName) =
+        use svc = WcfClientExtensions.ServiceCreate<_>(tag, configEndpointName)
+        WcfClientExtensions.ServiceSendAndReceive<_,_,_>(svc, request, operation)

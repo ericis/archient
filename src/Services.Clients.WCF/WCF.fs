@@ -1,5 +1,7 @@
 ﻿namespace Archient.Services.Clients
 
+// Documentation is provided in Signature File (.fsi)
+
 /// F# functions for clients of WCF service
 module WCF =
     open System

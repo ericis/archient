@@ -1,5 +1,7 @@
 ﻿namespace Archient.Testing
 
+// Documentation is provided in Signature File (.fsi)
+
 open Xunit
 
 type UnitTestAttribute() =

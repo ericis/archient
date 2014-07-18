@@ -42,9 +42,19 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.fsproj">
+      <Name>Contracts</Name>
+      <Project>{b4130fa0-ecb5-484f-ae14-9267b3de87f7}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Services.Clients.WCF\Services.Clients.WCF.fsproj">
       <Name>Services.Clients.WCF</Name>
       <Project>{6353af21-ddaf-4bf1-b7b4-ab898bab7ca1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.WCF\Services.WCF.fsproj">
+      <Name>Services.WCF</Name>
+      <Project>{25aa516d-799e-48c8-ac2d-e80803aca864}</Project>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Test.Xunit\Test.Xunit.fsproj">
@@ -98,17 +108,20 @@
   <PropertyGroup>
     <PreBuildEvent>if not exist $(ProjectDir)..\..\.deploy\ mkdir $(ProjectDir)..\..\.deploy\
 
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Test.Xunit\Test.Xunit.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Test.Xunit\Test.Xunit.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
 
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Services.Clients.WCF\Services.Clients.WCF.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Contracts\Contracts.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
 
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Host\Web.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Services.WCF\Services.WCF.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Services.Clients.WCF\Services.Clients.WCF.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
 
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc\Web.Mvc.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc.Host\Web.Mvc.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Host\Web.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
 
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api\Web.Api.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api.Host\Web.Api.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\</PreBuildEvent>
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc\Web.Mvc.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc.Host\Web.Mvc.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
+
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api\Web.Api.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api.Host\Web.Api.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

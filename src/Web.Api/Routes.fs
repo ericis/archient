@@ -1,5 +1,7 @@
 ﻿namespace Archient.Web.Http
 
+// Documentation is provided in Signature File (.fsi)
+
 module Routes =
     open System.Web.Http
     

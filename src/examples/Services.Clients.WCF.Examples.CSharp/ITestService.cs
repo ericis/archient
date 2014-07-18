@@ -1,9 +1,10 @@
 ﻿namespace Services.Clients.WCF.Examples.CSharp
 {
     using System.ServiceModel;
+    using Archient.Services.Contracts;
 
     [ServiceContract]
-    public interface ITestService
+    public interface ITestService : IPingService, IHealthCheckService
     {
         [OperationContract]
         void ExecuteWithNoResponse();
@@ -17,28 +18,5 @@
         [OperationContract]
 
         string PostAndProcess(string request);
-    }
-
-    public class TestService : ITestService
-    {
-        public void ExecuteWithNoResponse()
-        {
-            // no-op
-        }
-
-        public void PostData(string request)
-        {
-            // received request
-        }
-
-        public string GetData()
-        {
-            return "response";
-        }
-
-        public string PostAndProcess(string request)
-        {
-            return request + " response";
-        }
     }
 }

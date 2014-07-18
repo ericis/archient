@@ -1,5 +1,7 @@
 ﻿namespace Archient.Services.Clients
 
+// Documentation is provided in Signature File (.fsi)
+
 open System
 
 type IUseService<'TService> = interface end

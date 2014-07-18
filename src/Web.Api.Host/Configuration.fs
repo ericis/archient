@@ -1,5 +1,7 @@
 ﻿namespace Archient.Web.Http
 
+// Documentation is provided in Signature File (.fsi)
+
 module Configuration =
     open System
     open System.Web.Http

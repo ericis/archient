@@ -5,13 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d0ef0621-6556-4c1b-a892-f192b00b5dc7</ProjectGuid>
+    <ProjectGuid>25aa516d-799e-48c8-ac2d-e80803aca864</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Web.Host</RootNamespace>
-    <AssemblyName>Archient.Web.Host</AssemblyName>
+    <RootNamespace>Services.WCF</RootNamespace>
+    <AssemblyName>Archient.Services.Wcf</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
-    <Name>Web.Host</Name>
+    <Name>Services.WCF</Name>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\Archient.Web.Host.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Archient.Services.Wcf.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +31,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\Archient.Web.Host.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Archient.Services.Wcf.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -48,6 +49,7 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
+  <Import Project="..\Versions.Settings.targets" />
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.fs">
       <Link>GlobalAssemblyInfo.fs</Link>
@@ -56,8 +58,11 @@
       <Link>SharedAssemblyFileVersion.fs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="WebApp.fs" />
-    <None Include="Web.Host.nuspec" />
+    <Compile Include="ContractTypes.fsi" />
+    <Compile Include="ContractTypes.fs" />
+    <Compile Include="ServiceTypes.fsi" />
+    <Compile Include="ServiceTypes.fs" />
+    <None Include="Services.WCF.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -67,9 +72,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
-  <Import Project="..\Versions.Settings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

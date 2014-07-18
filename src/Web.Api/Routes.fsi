@@ -17,5 +17,5 @@ module Routes =
     /// <param name="namespaces">The controller namespaces.</param>
     /// <param name="defaults">The default data values applied to the route.</param>
     /// <param name="routes">The route collection to add the route to.</param>
-    /// <returns>The modified route collection.</param>
+    /// <returns>The modified route collection.</returns>
     val mapHttpToNamespaces : name:string -> routeTemplate:string -> defaults:obj -> namespaces:seq<string> -> routes:HttpRouteCollection -> HttpRouteCollection

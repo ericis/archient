@@ -2,18 +2,33 @@
 {
     using System;
     using System.ServiceModel;
+    using System.Xml.Linq;
     using Archient.Services.Clients;
+    using Archient.Services.Contracts;
     using Archient.Testing;
     using Xunit;
     using Assert = Xunit.Assert;
 
-    public class ExampleTests : IUseService<ITestService>
+    public class TestServiceClient : IUseService<ITestService>
     {
-        private const string ConfigEndpointName = "svc";
+        //// Although there is no implementation...
+        //// this allows you to mock dependencies within calling classes
+    }
+
+    public class ExampleTests
+    {
+        private const string ConfigEndpointName = "TestService";
 
         private const string ExpectedRequest = "request";
         private const string ExpectedSimpleResponse = "response";
         private const string ExpectedResponse = ExpectedRequest + " " + ExpectedSimpleResponse;
+
+        private readonly IUseService<ITestService> testServiceClient;
+
+        public ExampleTests()
+        {
+            this.testServiceClient = new TestServiceClient();
+        }
 
         #region Example: Real-World business logic
 
@@ -69,7 +84,7 @@
 
                     // internally creates the WCF client proxy and sends the specified request
                     // to the specified operation expecting a response
-                    var response = this.CreateSendAndReceive(
+                    var response = this.testServiceClient.ServiceCreateSendAndReceive(
                         request,
                         SendAndReceiveWithLogic,
                         ConfigEndpointName);
@@ -89,7 +104,7 @@
         public void Create_Service_Container()
         {
             // Creates a WCF client proxy from an extension method using the specified name
-            var serviceContainer = this.Create(ConfigEndpointName);
+            var serviceContainer = this.testServiceClient.ServiceCreate(ConfigEndpointName);
 
             Assert.NotNull(serviceContainer);
         }
@@ -100,7 +115,7 @@
             // Wrapper to start a running WCF service
             ExecuteWithRunningService(
                 // creates the WCF client proxy and calls the specified operation
-                () => this.CreateAndCall(
+                () => this.testServiceClient.ServiceCreateAndCall(
                     testService => testService.ExecuteWithNoResponse(),
                     ConfigEndpointName));
         }
@@ -110,7 +125,7 @@
         {
             ExecuteWithRunningService(
                 // creates the WCF client proxy and sends the specified request to the specified operation
-                () => this.CreateAndSend(
+                () => this.testServiceClient.ServiceCreateAndSend(
                     ExpectedRequest,
                     (testService, request) => testService.PostData(request),
                     ConfigEndpointName));
@@ -128,7 +143,7 @@
 
             // OR, if you have scope to the original request state in the call...
             //ExecuteWithRunningService(
-            //    () => this.CreateAndCall(
+            //    () => this.testServiceClient.ServiceCreateAndCall(
             //        testService => testService.PostData(ExpectedRequest),
             //        ConfigEndpointName));
         }
@@ -140,7 +155,7 @@
                 () =>
                 {
                     // creates the WCF client proxy and calls the specified operation with a response
-                    var response = this.CreateAndReceive(
+                    var response = this.testServiceClient.ServiceCreateAndReceive(
                         testService => testService.GetData(),
                         ConfigEndpointName);
 
@@ -155,12 +170,51 @@
                 () =>
                 {
                     // creates the WCF client proxy and sends the specified request to the specified operation with a response
-                    var response = this.CreateSendAndReceive(
+                    var response = this.testServiceClient.ServiceCreateSendAndReceive(
                         ExpectedRequest,
                         (testService, request) => testService.PostAndProcess(request),
                         ConfigEndpointName);
 
                     Assert.Equal(ExpectedResponse, response);
+                });
+        }
+
+        #endregion
+
+        #region Examples: Ping and Health Checks
+
+        [Fact, ExampleTest]
+        public void Service_Ping()
+        {
+            ExecuteWithRunningService(
+                () =>
+                {
+                    var pingResponse =
+                        this.testServiceClient.ServiceCreateAndReceive(
+                            svc => svc.Ping(),
+                            ConfigEndpointName);
+
+                    Assert.False(string.IsNullOrWhiteSpace(pingResponse));
+                });
+        }
+
+        [Fact, ExampleTest]
+        public void Service_HealthCheck()
+        {
+            ExecuteWithRunningService(
+                () =>
+                {
+                    var testResults =
+                        this.testServiceClient.ServiceCreateAndReceive(
+                            svc => svc.HealthCheck(null),
+                            ConfigEndpointName);
+
+                    Assert.False(string.IsNullOrWhiteSpace(testResults));
+
+                    var testResultsXml = XDocument.Parse(testResults);
+
+                    Assert.Equal("response", testResultsXml.Root.Name);
+                    Assert.Equal("Healthy", testResultsXml.Root.Value);
                 });
         }
 
