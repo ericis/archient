@@ -7,6 +7,6 @@ open System.Reflection
 
 [<assembly: AssemblyVersion("0.1.10814")>]
 [<assembly: AssemblyFileVersion("0.1.10814")>]
-[<assembly: AssemblyInformationalVersion("0.1.10814-debug+1001")>]
+[<assembly: AssemblyInformationalVersion("0.1.10814.1402")>]
 
 ()

@@ -1,33 +1,8 @@
 ﻿namespace Archient.Web
 
-module Domains =
-    open System
-
-    type PrimaryDomain =
-        | Archient
-        | Eric
-        | Unknown
-
-    let getPrimary (uri:Uri) =
-        let host = 
-            let hostWithPort = uri.Host
-            match hostWithPort.IndexOf(':') with
-            | -1 -> hostWithPort
-            | portIndex -> hostWithPort.Substring(0, portIndex)
-
-        let uhost = host.ToUpperInvariant()
-
-        if uhost.EndsWith("ERICIS.COM") || uhost.EndsWith("ISERIC.COM") then (host,PrimaryDomain.Eric)
-        else if uhost.EndsWith("ARCHIENT.COM") then (host,PrimaryDomain.Archient)
-        else (uhost,PrimaryDomain.Unknown)
-
 open System
 open System.Web.Mvc
 open Eric.Web
-
-type IViewModelProviderStrategy =
-    abstract member CanProvide : host:string * primary:Domains.PrimaryDomain -> bool
-    abstract member GetViewModel : host:string * primary:Domains.PrimaryDomain -> string*obj
 
 type HomeController() =
     inherit Controller()

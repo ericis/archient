@@ -5,6 +5,13 @@ module Routes =
     open System.Web.Mvc
     open System.Web.Routing
     
+    type ControllerDefaults =
+        {
+            controller : string
+            action : string
+            id : UrlParameter
+        }
+    
     let getGlobalRoutes() = 
         RouteTable.Routes
 
@@ -29,26 +36,31 @@ module Routes =
         routes
 
     let prettyPrint (routes:RouteCollection) =
-        routes
-        |> Seq.iter (fun route -> 
-            try
-                match route with
-                | :? System.Web.Routing.Route as r -> 
-                    let map (routeValues:System.Web.Routing.RouteValueDictionary) =
-                        try
-                            match routeValues.Count with
-                            | 0 -> Array.empty
-                            | _ -> routeValues |> Seq.map (fun routeValue -> sprintf "{ '%s' = '%A' }" routeValue.Key routeValue.Value) |> Seq.toArray
-                        with | _ -> Array.empty
+        
+        let lines =
+            routes
+            |> Seq.map (fun route -> 
+                try
+                    match route with
+                    | :? System.Web.Routing.Route as r -> 
+                        let map (routeValues:System.Web.Routing.RouteValueDictionary) =
+                            try
+                                match routeValues.Count with
+                                | 0 -> Array.empty
+                                | _ -> routeValues |> Seq.map (fun routeValue -> sprintf "{ '%s' = '%A' }" routeValue.Key routeValue.Value) |> Seq.toArray
+                            with | _ -> Array.empty
 
-                    let constraints, data, defaults = 
-                        (
-                            String.Join(",", map r.Constraints), 
-                            String.Join(",", map r.DataTokens), 
-                            String.Join(",", map r.Defaults))
+                        let constraints, data, defaults = 
+                            (
+                                String.Join(",", map r.Constraints), 
+                                String.Join(",", map r.DataTokens), 
+                                String.Join(",", map r.Defaults)
+                            )
 
-                    System.Diagnostics.Debug.WriteLine(sprintf "%s to %s: { 'constraints': [%s], 'data': [%s], 'defaults': [%s] }" (r.GetType().FullName) r.Url constraints data defaults)
+                        sprintf "%s to %s: { 'constraints': [%s], 'data': [%s], 'defaults': [%s] }" (r.GetType().FullName) r.Url constraints data defaults
 
-                | :? System.Web.Routing.RouteBase as br -> System.Diagnostics.Debug.WriteLine(sprintf "Base route: %A" br)
-                | r -> System.Diagnostics.Debug.WriteLine(sprintf "Unknown route: %A" r)
-            with | _ -> System.Diagnostics.Debug.WriteLine("Error processing route") )
+                    | :? System.Web.Routing.RouteBase as br -> sprintf "Base route: %A" br
+                    | r -> sprintf "Unknown route: %A" r
+                with | _ -> "Error processing route" )
+
+        String.Join(Environment.NewLine, lines)

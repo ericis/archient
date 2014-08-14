@@ -1,6 +1,6 @@
 ﻿namespace Archient.Leap
 
-/// Utility library for Leap Motion controller
+/// F# Leap Motion controller library
 module Leap =
     open System
     
@@ -25,8 +25,12 @@ module Leap =
         /// Gets an observable collection of screen tap gestures
         abstract member ScreenTaps : IObservable<ScreenTapGesture> with get
 
-    /// Subscribes to an observable collection item
+    /// <summary>Subscribes to an observable collection item</summary>
+    /// <param name="subscription">The subscription function</param>
+    /// <param name="observable">The observable being subscribed to</param>
+    /// <returns>A disposable subscription reference</returns>
     val subscribe<'t> : subscription:('t->unit) -> observable:IObservable<'t> -> IDisposable
     
-    /// Listen to Leap Motion gestures
+    /// <summary>Listen to Leap Motion gestures</summary>
+    /// <returns>An instance of leap gestures</returns>
     val listen : unit -> ILeapGestures

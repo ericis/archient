@@ -7,5 +7,6 @@ module Filters =
     let getGlobalFilters () = 
         GlobalFilters.Filters
 
-    let addFilter filter (filters:GlobalFilterCollection) = 
+    let addFilter (filter:obj) (filters:GlobalFilterCollection) = 
         filters.Add(filter)
+        filters

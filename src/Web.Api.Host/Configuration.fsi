@@ -1,6 +1,6 @@
 ﻿namespace Archient.Web.Http
 
-/// F# functions for HTTP Configuration
+/// F# HTTP Configuration library
 module Configuration =
     open System
     open System.Web.Http

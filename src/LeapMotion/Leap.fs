@@ -1,12 +1,13 @@
 ﻿namespace Archient.Leap
 
-module Leap =
-    open Leap
+// Documentation is provided in Signature File (.fsi)
 
+module Leap =
     open System
-    open System.Reactive
     open System.Reactive.Linq
     open System.Reactive.Subjects
+    
+    open Leap
 
     type ILeapGestures =
         inherit IDisposable

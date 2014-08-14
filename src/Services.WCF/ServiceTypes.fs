@@ -1,5 +1,7 @@
 ﻿namespace Archient.Services
 
+// Documentation is provided in Signature File (.fsi)
+
 open System
 open Archient.Services.Contracts
 

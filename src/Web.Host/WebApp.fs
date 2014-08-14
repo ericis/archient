@@ -1,5 +1,7 @@
 ﻿namespace Archient.Web
 
+// Documentation is provided in Signature File (.fsi)
+
 open System
 open System.Collections.Generic
 open System.Web
@@ -24,9 +26,11 @@ type WebApp() =
             Trace.TraceError(error.Message)
         ()
 
-    member me.Application_Start(sender:obj, e:EventArgs) =
+    abstract member Application_Start : sender:obj*e:EventArgs -> unit
+    default me.Application_Start(sender:obj, e:EventArgs) =
         me.OnStart()
-
-    member me.Application_Error(sender:obj, e:EventArgs) =
+        
+    abstract member Application_Error : sender:obj*e:EventArgs -> unit
+    default me.Application_Error(sender:obj, e:EventArgs) =
         let error = me.Server.GetLastError()
         me.OnError(error)

@@ -10,3 +10,7 @@ type PageViewModel<'THeader,'TBody,'TFooter>(header:'THeader, body:'TBody, foote
     member me.Header = header
     member me.Body = body
     member me.Footer = footer
+
+type IViewModelProviderStrategy =
+    abstract member CanProvide : host:string * primary:Domains.PrimaryDomain -> bool
+    abstract member GetViewModel : host:string * primary:Domains.PrimaryDomain -> string*obj

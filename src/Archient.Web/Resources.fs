@@ -5,7 +5,8 @@ module Resources =
 
     type private IResx = interface end
 
-    let private thisAssembly = typeof<IResx>.Assembly
+    let private thisAssembly = 
+        typeof<IResx>.Assembly
 
     let private resx = 
         ResourceManager("Resources", thisAssembly)

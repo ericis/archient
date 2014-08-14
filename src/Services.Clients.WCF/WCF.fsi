@@ -1,6 +1,6 @@
 ﻿namespace Archient.Services.Clients
 
-/// F# functions for clients of WCF service
+/// F# WCF service client library
 module WCF =
     open System
     open System.ServiceModel

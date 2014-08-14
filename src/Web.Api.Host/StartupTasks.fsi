@@ -1,6 +1,6 @@
 ﻿namespace Archient.Web.Http
 
-/// F# startup tasks for HTTP web applications
+/// F# Web API application startup tasks library
 module StartupTasks = 
     (*
         ASP.NET has evolved quite substantially to the current 4.5.2 framework along with versions 

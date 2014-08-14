@@ -62,9 +62,10 @@
     <EmbeddedResource Include="UnknownWebsiteResources.resx" />
     <Compile Include="Resources.fs" />
     <Compile Include="ApiControllerTypes.fs" />
+    <Compile Include="Views.fs" />
+    <Compile Include="Domains.fs" />
     <Compile Include="ViewModelTypes.fs" />
     <Compile Include="ViewModels.fs" />
-    <Compile Include="Views.fs" />
     <Compile Include="MvcControllerTypes.fs" />
     <Compile Include="StartupTasks.fs" />
     <Compile Include="ArchientApp.fs" />

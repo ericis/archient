@@ -37,8 +37,7 @@ module StartupTasks =
             fun () -> 
                 StartupTasks.registerDefaultMvcRoutes [ typeof<HomeController>.Namespace ]
 
-            //// Web Optimization Bundling
-
+            // Web Optimization Bundling
             fun () ->
-                Routes.prettyPrint System.Web.Routing.RouteTable.Routes
+                System.Diagnostics.Debug.WriteLine(Routes.prettyPrint System.Web.Routing.RouteTable.Routes)
         ]

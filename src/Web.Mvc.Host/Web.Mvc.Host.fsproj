@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="HttpApplicationExtensions.fs" />
+    <Compile Include="StartupTasks.fsi" />
     <Compile Include="StartupTasks.fs" />
     <None Include="Web.Mvc.Host.nuspec" />
     <None Include="packages.config" />

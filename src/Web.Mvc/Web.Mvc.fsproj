@@ -66,9 +66,12 @@
       <Link>SharedAssemblyFileVersion.fs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Routes.fsi" />
     <Compile Include="Routes.fs" />
     <Compile Include="RouteCollectionExtensions.fs" />
+    <Compile Include="Areas.fsi" />
     <Compile Include="Areas.fs" />
+    <Compile Include="Filters.fsi" />
     <Compile Include="Filters.fs" />
     <None Include="Web.Mvc.nuspec" />
   </ItemGroup>
