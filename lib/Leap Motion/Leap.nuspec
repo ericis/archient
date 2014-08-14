@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LeapMotion</id>
+    <version>2.0.4.0</version>
+    <authors>Eric Swanson</authors>
+    <owners>LeapMotion.com</owners>
+    <projectUrl>http://developer.leapmotion.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Leap Motion C# Library</title>
+    <description>Leap Motion C# Library</description>
+    <summary>Leap Motion C# Library</summary>
+    <releaseNotes>
+      2.0.4.0: Initial release
+    </releaseNotes>
+    <language>en-US</language>
+    <tags>Leap Motion</tags>
+  </metadata>
+</package>

@@ -8,9 +8,6 @@ module WcfTests =
     let private createSvc () =
         WCF.createFromEndpoint<ITestService> "svc"
 
-    let private convertSvcToComm (svc:obj) =
-        svc :?> ICommunicationObject
-
     let private getSvcWithState state onAbort onClose =
         {
             new ICommunicationObject with
@@ -51,7 +48,7 @@ module WcfTests =
         svc |> Assert.isType<ITestService>
         svc |> Assert.isOfType<ICommunicationObject> true
         
-        let comm = convertSvcToComm svc
+        let comm = svc :?> ICommunicationObject
 
         comm.State |> Assert.areEqual CommunicationState.Created
 
@@ -63,7 +60,7 @@ module WcfTests =
 
         svc |> WCF.callAndForget (fun svc -> called := true)
         
-        let comm = convertSvcToComm svc
+        let comm = svc :?> ICommunicationObject
 
         comm.State |> Assert.areEqual CommunicationState.Closed
         
@@ -78,9 +75,7 @@ module WcfTests =
 
         closingSvc |> WCF.callAndForget (fun svc -> called := true)
         
-        let comm = convertSvcToComm closingSvc
-
-        comm.State |> Assert.areEqual CommunicationState.Closing
+        closingSvc.State |> Assert.areEqual CommunicationState.Closing
         
         !called |> Assert.isTrue
         !closed |> Assert.isFalse
@@ -94,9 +89,7 @@ module WcfTests =
 
         closedSvc |> WCF.callAndForget (fun svc -> called := true)
         
-        let comm = convertSvcToComm closedSvc
-
-        comm.State |> Assert.areEqual CommunicationState.Closed
+        closedSvc.State |> Assert.areEqual CommunicationState.Closed
         
         !called |> Assert.isTrue
         !closed |> Assert.isFalse
@@ -110,9 +103,7 @@ module WcfTests =
 
         faultedSvc |> WCF.callAndForget (fun svc -> called := true)
         
-        let comm = convertSvcToComm faultedSvc
-
-        comm.State |> Assert.areEqual CommunicationState.Faulted
+        faultedSvc.State |> Assert.areEqual CommunicationState.Faulted
         
         !called |> Assert.isTrue
         !aborted |> Assert.isTrue
@@ -129,6 +120,6 @@ module WcfTests =
         |> WCF.callAndReceive (fun svc -> response)
         |> Assert.areEqual response
         
-        let comm = convertSvcToComm svc
+        let comm = svc :?> ICommunicationObject
 
         comm.State |> Assert.areEqual CommunicationState.Closed

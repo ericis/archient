@@ -6,4 +6,8 @@ module Views =
     module Shared =
         let private root = root + "/Shared"
         
-        let Archient = root + "/Archient.cshtml"
+        let private Site = root + "/Site.cshtml"
+
+        let Archient = Site
+        let Eric = Site
+        let Unknown = Site

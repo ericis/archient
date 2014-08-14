@@ -1,0 +1,14 @@
+﻿@model Archient.Web.PageViewModel<PageHeaderViewModel, dynamic, PageFooterViewModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    @Html.DisplayFor(vm => vm.Header)
+</head>
+<body>
+    @Html.DisplayFor(vm => vm.Body)
+    @Html.DisplayFor(vm => vm.Footer)
+</body>
+</html>

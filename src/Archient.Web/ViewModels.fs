@@ -1,5 +1,5 @@
 ﻿namespace Archient.Web
 
 module ViewModels =
-    let create head body =
-        PageViewModel(head, body)
+    let create header body footer =
+        PageViewModel(header, body, footer)

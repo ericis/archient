@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_docs", "_docs", "{81E8B724-1849-46E1-B426-02F300480530}"
 	ProjectSection(SolutionItems) = preProject
@@ -55,6 +55,22 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Services.WCF", "src\Services.WCF\Services.WCF.fsproj", "{25AA516D-799E-48C8-AC2D-E80803ACA864}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Services.WCF.Tests.Integration", "src\Services.WCF.Tests.Integration\Services.WCF.Tests.Integration.fsproj", "{ADA1C61E-D2F8-4645-914A-A87C8AEB23F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Leap Motion", "Leap Motion", "{A70160B8-32B8-4DD7-B14D-D3B0228B1FE6}"
+	ProjectSection(SolutionItems) = preProject
+		lib\Leap Motion\Leap.nuspec = lib\Leap Motion\Leap.nuspec
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LeapMotion", "src\LeapMotion\LeapMotion.fsproj", "{131C12D8-242F-42B2-9CA9-E87F817E4FDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CD5D637F-2986-4F24-BBCF-EB51E633E7EA}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LeapMotion.WPF.Examples.FSharp", "src\examples\LeapMotion.WPF.Examples.FSharp\LeapMotion.WPF.Examples.FSharp.fsproj", "{405BEE6B-D1B0-4174-A070-CBB52683FA06}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eric.Web", "src\Eric.Web\Eric.Web.fsproj", "{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -189,6 +205,30 @@ Global
 		{ADA1C61E-D2F8-4645-914A-A87C8AEB23F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADA1C61E-D2F8-4645-914A-A87C8AEB23F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADA1C61E-D2F8-4645-914A-A87C8AEB23F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Debug FW|Any CPU.ActiveCfg = Debug|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Debug FW|Any CPU.Build.0 = Debug|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Debug Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Debug Web|Any CPU.Build.0 = Debug|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Debug FW|Any CPU.ActiveCfg = Debug|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Debug FW|Any CPU.Build.0 = Debug|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Debug Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Debug Web|Any CPU.Build.0 = Debug|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Debug FW|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Debug FW|Any CPU.Build.0 = Debug|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Debug Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Debug Web|Any CPU.Build.0 = Debug|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,5 +253,9 @@ Global
 		{3E8CE5F6-4AAE-4642-91C4-794449EACEB0} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
 		{25AA516D-799E-48C8-AC2D-E80803ACA864} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
 		{ADA1C61E-D2F8-4645-914A-A87C8AEB23F2} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
+		{A70160B8-32B8-4DD7-B14D-D3B0228B1FE6} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
+		{131C12D8-242F-42B2-9CA9-E87F817E4FDC} = {241D3AE6-ED2C-4470-B3C0-7EE7ECDB81BE}
+		{405BEE6B-D1B0-4174-A070-CBB52683FA06} = {FB90063C-F965-4178-AE53-7F2EC9560C3C}
+		{D9B0376A-8134-4F2A-8D88-C71A5C1A999A} = {7AE6AC86-31B9-46AF-9391-A7E55E42FAA5}
 	EndGlobalSection
 EndGlobal

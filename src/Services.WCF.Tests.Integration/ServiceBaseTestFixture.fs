@@ -10,8 +10,13 @@ module ServiceBaseTestFixture =
     open Archient.Services.Clients
     open Archient.Services.Contracts
     
+    let expectedPingResult = "Integration Test ping!"
+
     type TestService() =
         inherit ServiceBase()
+
+        override me.Ping() =
+            expectedPingResult
 
         override me.HealthCheck(key) =
             key
@@ -20,14 +25,13 @@ module ServiceBaseTestFixture =
         
         let endpoint = "http://localhost:8088/archient-test"
         let addr = Uri(endpoint)
+
         use host = new ServiceHost(typeof<TestService>, addr)
 
         host.Open()
         
-        let pingResponse = 
-            WCF.createFromEndpoint<IPingService> "TestService"
-            |> WCF.callAndReceive (fun svc -> svc.Ping())
-
-        Assert.isFalse (String.IsNullOrWhiteSpace(pingResponse))
+        WCF.createFromEndpoint<IPingService> "TestService"
+        |> WCF.callAndReceive (fun svc -> svc.Ping())
+        |> Assert.areEqual expectedPingResult
 
         host.Close()

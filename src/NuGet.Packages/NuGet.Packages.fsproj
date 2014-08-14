@@ -47,6 +47,11 @@
       <Project>{b4130fa0-ecb5-484f-ae14-9267b3de87f7}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\LeapMotion\LeapMotion.fsproj">
+      <Name>LeapMotion</Name>
+      <Project>{131c12d8-242f-42b2-9ca9-e87f817e4fdc}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Services.Clients.WCF\Services.Clients.WCF.fsproj">
       <Name>Services.Clients.WCF</Name>
       <Project>{6353af21-ddaf-4bf1-b7b4-ab898bab7ca1}</Project>
@@ -121,7 +126,9 @@ $(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc\Web.Mvc.fsproj 
 $(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Mvc.Host\Web.Mvc.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
 
 $(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api\Web.Api.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
-$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api.Host\Web.Api.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)</PreBuildEvent>
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\Web.Api.Host\Web.Api.Host.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)
+
+$(ProjectDir)..\..\.nuget\NuGet.exe pack $(ProjectDir)..\LeapMotion\LeapMotion.fsproj -OutputDirectory $(ProjectDir)..\..\.deploy\ -Prop Configuration=$(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

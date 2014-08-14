@@ -59,7 +59,8 @@
   </Target>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx" />
-    <Compile Include="Resx.fs" />
+    <EmbeddedResource Include="UnknownWebsiteResources.resx" />
+    <Compile Include="Resources.fs" />
     <Compile Include="ApiControllerTypes.fs" />
     <Compile Include="ViewModelTypes.fs" />
     <Compile Include="ViewModels.fs" />
@@ -92,6 +93,11 @@
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
+    <ProjectReference Include="..\Eric.Web\Eric.Web.fsproj">
+      <Name>Eric.Web</Name>
+      <Project>{d9b0376a-8134-4f2a-8d88-c71a5c1a999a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Web.Api.Host\Web.Api.Host.fsproj">
       <Name>Web.Api.Host</Name>
       <Project>{10722cfa-be72-4e04-9385-aca1870579dd}</Project>

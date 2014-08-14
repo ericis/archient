@@ -15,7 +15,7 @@ module WcfTypeExtensionsTests =
         
         let svc = createSvc()
 
-        let container = svc.Create(configEndpointName)
+        let container = svc.ServiceCreate(configEndpointName)
         
         container |> Assert.isNotNull
 
@@ -25,7 +25,7 @@ module WcfTypeExtensionsTests =
         let called = ref false
         let operation = new Action<_>(fun _ -> called := true)
         
-        svc.CreateAndCall(operation, configEndpointName)
+        svc.ServiceCreateAndCall(operation, configEndpointName)
         
         !called |> Assert.isTrue
 
@@ -42,7 +42,7 @@ module WcfTypeExtensionsTests =
                         request |> Assert.areEqual expectedRequest
                         called := true)
         
-        svc.CreateAndSend(expectedRequest, operation, configEndpointName)
+        svc.ServiceCreateAndSend(expectedRequest, operation, configEndpointName)
         
         !called |> Assert.isTrue
 
@@ -58,7 +58,7 @@ module WcfTypeExtensionsTests =
                     called := true
                     expectedResponse)
         
-        svc.CreateAndReceive(operation, configEndpointName)
+        svc.ServiceCreateAndReceive(operation, configEndpointName)
         |> Assert.areEqual expectedResponse
         
         !called |> Assert.isTrue
@@ -78,7 +78,7 @@ module WcfTypeExtensionsTests =
                         called := true
                         sprintf "%s %s" request simpleResponse)
         
-        svc.CreateSendAndReceive(expectedRequest, operation, configEndpointName)
+        svc.ServiceCreateSendAndReceive(expectedRequest, operation, configEndpointName)
         |> Assert.areEqual expectedResponse
         
         !called |> Assert.isTrue
@@ -89,11 +89,11 @@ module WcfTypeExtensionsTests =
         let called = ref false
         let operation = new Action<_>(fun _ -> called := true)
 
-        let container = svc.Create(configEndpointName)
+        let container = svc.ServiceCreate(configEndpointName)
         
         !called |> Assert.isFalse
 
-        container.Call(operation)
+        container.ServiceCall(operation)
 
         !called |> Assert.isTrue
 
@@ -109,11 +109,11 @@ module WcfTypeExtensionsTests =
                         request |> Assert.areEqual expectedRequest
                         called := true)
 
-        let container = svc.Create(configEndpointName)
+        let container = svc.ServiceCreate(configEndpointName)
         
         !called |> Assert.isFalse
 
-        container.Send(expectedRequest, operation)
+        container.ServiceSend(expectedRequest, operation)
 
         !called |> Assert.isTrue
 
@@ -128,11 +128,11 @@ module WcfTypeExtensionsTests =
                     called := true
                     expectedResponse)
 
-        let container = svc.Create(configEndpointName)
+        let container = svc.ServiceCreate(configEndpointName)
         
         !called |> Assert.isFalse
 
-        container.Receive(operation)
+        container.ServiceReceive(operation)
         |> Assert.areEqual expectedResponse
 
         !called |> Assert.isTrue
@@ -152,11 +152,11 @@ module WcfTypeExtensionsTests =
                         called := true
                         sprintf "%s %s" request simpleResponse)
 
-        let container = svc.Create(configEndpointName)
+        let container = svc.ServiceCreate(configEndpointName)
         
         !called |> Assert.isFalse
 
-        container.SendAndReceive(expectedRequest, operation)
+        container.ServiceSendAndReceive(expectedRequest, operation)
         |> Assert.areEqual expectedResponse
 
         !called |> Assert.isTrue
