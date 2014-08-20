@@ -64,4 +64,5 @@ type HomeController() =
                 let model = ViewModels.create (PageHeaderViewModel(title)) (box title) (PageFooterViewModel())
                 (Views.Shared.Unknown, box model)
 
-        me.View(view, model)
+        //me.View(view, model)
+        me.View("~/tada/tada.cshtml")

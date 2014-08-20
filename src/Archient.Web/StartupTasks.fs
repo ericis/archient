@@ -16,11 +16,29 @@ module StartupTasks =
         aiming high.
     *)
 
+    open System.Web.Mvc
+    open System.Web.Hosting
+
     open Archient.Web.Mvc
     open Archient.Web.Http
     
     let getStartupTasks() = 
         [
+            fun () ->
+                
+                let viewEngines = ViewEngines.Engines
+                
+                viewEngines.Clear()
+                //viewEngines.Remove(viewEngines.OfType<WebFormViewEngine>().First())
+                viewEngines.Add(MyViewEngine())
+                //viewEngines.Add(RazorViewEngine())
+
+                System.Diagnostics.Debug.WriteLine("RegisterVirtualPathProvider([VirtualViewPathProvider])-start")
+                HostingEnvironment.RegisterVirtualPathProvider(VirtualViewPathProvider())
+                System.Diagnostics.Debug.WriteLine("RegisterVirtualPathProvider([VirtualViewPathProvider])-end")
+                
+                ()
+
             // MVC Areas
             StartupTasks.registerDefaultAreas
             

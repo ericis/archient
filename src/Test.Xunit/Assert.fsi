@@ -71,3 +71,8 @@ module Assert =
     /// <typeparam name="T">The type of exception to expect.</typeparam>
     /// <param name="action">The action to run that is expected to throw an exception.</param>
     val throws<'T when 'T :> exn> : action:(unit->unit) -> unit
+
+    val isGT : comparison:int -> actual:int -> unit
+    val isGTE : comparison:int -> actual:int -> unit
+    val isLT : comparison:int -> actual:int -> unit
+    val isLTE : comparison:int -> actual:int -> unit

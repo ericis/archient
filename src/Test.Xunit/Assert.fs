@@ -48,3 +48,15 @@ module Assert =
 
     let throws<'T when 'T :> exn> (action:unit->unit) =
         ignore <| Assert.Throws<'T>(fun _ -> action())
+
+    let isGT (comparison:int) (actual:int) =
+        isTrue (actual > comparison)
+
+    let isGTE (comparison:int) (actual:int) =
+        isTrue (actual >= comparison)
+
+    let isLT (comparison:int) (actual:int) =
+        isTrue (actual < comparison)
+
+    let isLTE (comparison:int) (actual:int) =
+        isTrue (actual <= comparison)
