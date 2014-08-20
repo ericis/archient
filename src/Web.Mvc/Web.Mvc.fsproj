@@ -73,7 +73,12 @@
     <Compile Include="Areas.fs" />
     <Compile Include="Filters.fsi" />
     <Compile Include="Filters.fs" />
+    <Compile Include="VirtualTypes.fsi" />
+    <Compile Include="VirtualTypes.fs" />
+    <Compile Include="Virtual.fsi" />
     <Compile Include="Virtual.fs" />
+    <Compile Include="VirtualExtensions.fsi" />
+    <Compile Include="VirtualExtensions.fs" />
     <None Include="Web.Mvc.nuspec" />
   </ItemGroup>
   <ItemGroup>

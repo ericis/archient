@@ -1,19 +1,5 @@
 ﻿namespace Archient.Web.Mvc
 
-open System
-
-type IVirtualFile =
-
-    abstract member VirtualPath : string with get
-
-    abstract member Open : unit -> System.IO.Stream
-
-type IVirtualFileProvider =
-    
-    abstract member FileExists : virtualPath:string -> bool
-    abstract member GetFileHash : virtualPath:string * virtualPathDependencies:System.Collections.IEnumerable -> string
-    abstract member GetFile : virtualPath:string -> IVirtualFile
-
 module Virtual =
     
     open System
@@ -104,12 +90,14 @@ module Virtual =
                 override me.GetFile(virtualPath) = onGetFile virtualPath
         }
 
-    let replaceViewEngines virtualEngine =
-        ViewEngines.Engines.Clear()
-        ViewEngines.Engines.Add(virtualEngine)
+    let replaceViewEngines virtualEngine (viewEngines:ViewEngineCollection) =
+        viewEngines.Clear()
+        viewEngines.Add(virtualEngine)
+        viewEngines
 
-    let addVirtualPathProvider provider =
+    let addVirtualPathProvider<'t when 't :> VirtualPathProvider> (provider:'t) =
         HostingEnvironment.RegisterVirtualPathProvider(provider)
+        provider
 
     let toWebVirtualFileProvider (virtualProvider:IVirtualFileProvider) =
         let onFileExists path = virtualProvider.FileExists(path)
@@ -123,20 +111,6 @@ module Virtual =
     let createVirtualRazorViewEngine virtualFileProvider =
         VirtualRazorViewEngine(virtualFileProvider) :> IViewEngine
 
-    let virtualizeViews provider =
-        replaceViewEngines(createVirtualRazorViewEngine provider)
+    let virtualizeViews<'t when 't :> IVirtualFileProvider and 't :> VirtualPathProvider> (provider:'t) viewEngines =
+        ignore <| replaceViewEngines (createVirtualRazorViewEngine provider) viewEngines
         addVirtualPathProvider(provider)
-
-[<System.Runtime.CompilerServices.Extension>]
-module VirtualFileExtensions =
-    [<System.Runtime.CompilerServices.Extension>]
-    let ToWebVirtualFile(virtualFile:IVirtualFile) =
-        Virtual.toWebVirtualFile virtualFile
-        
-    [<System.Runtime.CompilerServices.Extension>]
-    let ToVirtualFile(virtualFile:System.Web.Hosting.VirtualFile) =
-        Virtual.toVirtualFile virtualFile
-
-    [<System.Runtime.CompilerServices.Extension>]
-    let ToWebVirtualFileProvider(virtualFileProvider:IVirtualFileProvider) =
-        Virtual.toWebVirtualFileProvider virtualFileProvider
