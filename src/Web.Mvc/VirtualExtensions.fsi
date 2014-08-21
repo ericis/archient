@@ -15,4 +15,4 @@ module VirtualFileExtensions =
     val ToWebVirtualFileProvider : virtualFileProvider:IVirtualFileProvider -> VirtualPathProvider
 
     /// Virtualizes MVC Views to come from a virtual location
-    val Virtualize : viewEngines:ViewEngineCollection * onVirtualFileExists:Func<string,bool> * onGetVirtualFile:Func<string,IVirtualFile> -> VirtualPathProvider
+    val Virtualize : viewEngines:ViewEngineCollection * onVirtualFileExists:Func<string,bool> * onGetVirtualFile:Func<string,IVirtualFile> -> IVirtualFileProvider

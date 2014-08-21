@@ -17,7 +17,6 @@ module StartupTasks =
     *)
 
     open System.Web.Mvc
-    open System.Web.Hosting
 
     open Archient.Web.Mvc
     open Archient.Web.Http
@@ -26,18 +25,16 @@ module StartupTasks =
         [
             fun () ->
                 
-                let viewEngines = ViewEngines.Engines
-                
-                viewEngines.Clear()
-                //viewEngines.Remove(viewEngines.OfType<WebFormViewEngine>().First())
-                viewEngines.Add(MyViewEngine())
-                //viewEngines.Add(RazorViewEngine())
+                let virtualFileExists (path:string) =
+                    path.EndsWith("/tada/tada.cshtml")
 
-                System.Diagnostics.Debug.WriteLine("RegisterVirtualPathProvider([VirtualViewPathProvider])-start")
-                HostingEnvironment.RegisterVirtualPathProvider(VirtualViewPathProvider())
-                System.Diagnostics.Debug.WriteLine("RegisterVirtualPathProvider([VirtualViewPathProvider])-end")
-                
-                ()
+                let getVirtualFile (path:string) =
+                    let content = "@inherits System.Web.Mvc.WebViewPage<dynamic>\n<strong>Virtual tada!</strong>"
+                    Virtual.createFileFromString content path
+
+                ViewEngines.Engines
+                |> Virtual.virtualizeViews virtualFileExists getVirtualFile
+                |> ignore
 
             // MVC Areas
             StartupTasks.registerDefaultAreas
@@ -53,7 +50,19 @@ module StartupTasks =
             
             // MVC Routes
             fun () -> 
-                StartupTasks.registerDefaultMvcRoutes [ typeof<HomeController>.Namespace ]
+                let controllerDefaults = 
+                    {
+                        Archient.Web.Mvc.Routes.ControllerDefaults.controller = "Home"
+                        Archient.Web.Mvc.Routes.ControllerDefaults.action = "Index"
+                        Archient.Web.Mvc.Routes.ControllerDefaults.id = System.Web.Mvc.UrlParameter.Optional
+                    }
+                
+                Routes.getGlobalRoutes()
+                |> Routes.ignore "{resource}.axd/{*pathInfo}"
+                |> Routes.mapToNamespaces "Default" "{*pathInfo}" controllerDefaults ([ typeof<HomeController>.Namespace ] |> Seq.toArray)
+                |> ignore
+
+                //StartupTasks.registerDefaultMvcRoutes [ typeof<HomeController>.Namespace ]
 
             // Web Optimization Bundling
             fun () ->

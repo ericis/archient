@@ -111,6 +111,42 @@ module Virtual =
     let createVirtualRazorViewEngine virtualFileProvider =
         VirtualRazorViewEngine(virtualFileProvider) :> IViewEngine
 
-    let virtualizeViews<'t when 't :> IVirtualFileProvider and 't :> VirtualPathProvider> (provider:'t) viewEngines =
+    let virtualizeViewsWithProvider<'t when 't :> IVirtualFileProvider and 't :> VirtualPathProvider> (provider:'t) viewEngines =
         ignore <| replaceViewEngines (createVirtualRazorViewEngine provider) viewEngines
         addVirtualPathProvider(provider)
+    
+    type private MyVirtualPathProvider(onVirtualFileExists, onGetVirtualFile) =
+        inherit VirtualPathProvider()
+
+        override me.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart) =
+            match onVirtualFileExists virtualPath with
+            | true -> null
+            | false -> base.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart)
+            
+        override me.FileExists(virtualPath) = 
+            match onVirtualFileExists virtualPath with
+            | true -> true
+            | false -> base.FileExists(virtualPath)
+            
+        override me.GetFile(virtualPath) = 
+            match onVirtualFileExists virtualPath with
+            | true -> onGetVirtualFile virtualPath |> toWebVirtualFile
+            | false -> base.GetFile(virtualPath)
+
+        interface IVirtualFileProvider with
+            
+            override me.FileExists(virtualPath) = 
+                me.FileExists(virtualPath)
+
+            override me.GetFile(virtualPath) = 
+                me.GetFile(virtualPath) |> toVirtualFile
+
+            override me.GetFileHash(virtualPath, virtualPathDependencies) = 
+                me.GetFileHash(virtualPath, virtualPathDependencies)
+        
+    let virtualizeViews (onVirtualFileExists:string->bool) (onGetVirtualFile:string->IVirtualFile) (viewEngines:ViewEngineCollection) =
+        
+        let virtualProvider = MyVirtualPathProvider(onVirtualFileExists, onGetVirtualFile)
+
+        virtualizeViewsWithProvider virtualProvider viewEngines
+        :> IVirtualFileProvider
