@@ -26,7 +26,7 @@ module StartupTasks =
             fun () ->
                 
                 let virtualFileExists (path:string) =
-                    path.EndsWith("/tada/tada.cshtml")
+                    path.Contains("tada")
 
                 let getVirtualFile (path:string) =
                     let content = "@inherits System.Web.Mvc.WebViewPage<dynamic>\n<strong>Virtual tada!</strong>"

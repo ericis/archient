@@ -40,9 +40,12 @@ module Virtual =
             me.AreaMasterLocationFormats <- Array.empty
             me.AreaViewLocationFormats <- Array.empty
             me.AreaPartialViewLocationFormats <- Array.empty
+            
             me.MasterLocationFormats <- Array.empty
-            me.ViewLocationFormats <- [|""|] // empty results in MVC exception
-            me.PartialViewLocationFormats <- Array.empty
+            // *Array.empty results in MVC exception
+            me.ViewLocationFormats <- [|"~/Views/Shared/{0}.cshtml"|]
+            // *Array.empty results in MVC exception when partials are referenced
+            me.PartialViewLocationFormats <- [|"~/Views/Shared/{0}.cshtml"|]
 
         override me.FileExists(controllerContext, virtualPath) =
             match virtualFileProvider.FileExists(virtualPath) with

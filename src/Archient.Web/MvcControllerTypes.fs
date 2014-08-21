@@ -10,7 +10,7 @@ type HomeController() =
     let getArchientStrategy() =
         {
             new IViewModelProviderStrategy with
-                override me.CanProvide(host, primary) =
+                override me.CanGetViewModel(host, primary) =
                     primary = Domains.Archient
                 
                 override me.GetViewModel(host, primary) =
@@ -25,7 +25,7 @@ type HomeController() =
     let getEricStrategy() =
         {
             new IViewModelProviderStrategy with
-                override me.CanProvide(host, primary) =
+                override me.CanGetViewModel(host, primary) =
                     primary = Domains.Eric
 
                 override me.GetViewModel(host, primary) =
@@ -53,7 +53,7 @@ type HomeController() =
 
         let viewModelStrategy =
             strategies
-            |> Seq.tryFind (fun strategy -> strategy.CanProvide(host, primary))
+            |> Seq.tryFind (fun strategy -> strategy.CanGetViewModel(host, primary))
         
         let view, model = 
             match viewModelStrategy with
@@ -64,5 +64,4 @@ type HomeController() =
                 let model = ViewModels.create (PageHeaderViewModel(title)) (box title) (PageFooterViewModel())
                 (Views.Shared.Unknown, box model)
 
-        //me.View(view, model)
-        me.View("~/tada/tada.cshtml")
+        me.View(view, model)
