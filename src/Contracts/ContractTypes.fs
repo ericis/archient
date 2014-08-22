@@ -10,3 +10,7 @@ type IHealthCheck<'TResult> =
 
 type IHealthCheck =
     inherit IHealthCheck<string>
+
+type IValueProviderStrategy<'ctx,'t> =
+    abstract member CanProvideValue : context:'ctx -> bool
+    abstract member GetValue : context:'ctx -> 't

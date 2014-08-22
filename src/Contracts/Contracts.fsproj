@@ -69,6 +69,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ContractTypes.fsi" />
     <Compile Include="ContractTypes.fs" />
+    <Compile Include="Contract.fsi" />
+    <Compile Include="Contract.fs" />
     <None Include="Contracts.nuspec" />
   </ItemGroup>
   <ItemGroup>

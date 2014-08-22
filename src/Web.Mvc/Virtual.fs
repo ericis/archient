@@ -42,8 +42,10 @@ module Virtual =
             me.AreaPartialViewLocationFormats <- Array.empty
             
             me.MasterLocationFormats <- Array.empty
+
             // *Array.empty results in MVC exception
             me.ViewLocationFormats <- [|"~/Views/Shared/{0}.cshtml"|]
+
             // *Array.empty results in MVC exception when partials are referenced
             me.PartialViewLocationFormats <- [|"~/Views/Shared/{0}.cshtml"|]
 

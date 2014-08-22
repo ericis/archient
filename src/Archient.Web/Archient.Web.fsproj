@@ -95,6 +95,11 @@
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
+    <ProjectReference Include="..\Contracts\Contracts.fsproj">
+      <Name>Contracts</Name>
+      <Project>{b4130fa0-ecb5-484f-ae14-9267b3de87f7}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Eric.Web\Eric.Web.fsproj">
       <Name>Eric.Web</Name>
       <Project>{d9b0376a-8134-4f2a-8d88-c71a5c1a999a}</Project>

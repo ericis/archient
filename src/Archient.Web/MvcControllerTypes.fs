@@ -2,6 +2,7 @@
 
 open System
 open System.Web.Mvc
+open Archient.Contracts
 open Eric.Web
 
 type HomeController() =
@@ -9,11 +10,11 @@ type HomeController() =
 
     let getArchientStrategy() =
         {
-            new IViewModelProviderStrategy with
-                override me.CanGetViewModel(host, primary) =
+            new IValueProviderStrategy<Domains.PrimaryDomain,string*obj> with
+                override me.CanProvideValue((primary)) =
                     primary = Domains.Archient
                 
-                override me.GetViewModel(host, primary) =
+                override me.GetValue(_) =
                     let model =
                         let header = PageHeaderViewModel(Resources.Archient.Home.Title)
                         let body = box Resources.Archient.Home.Title
@@ -24,11 +25,11 @@ type HomeController() =
 
     let getEricStrategy() =
         {
-            new IViewModelProviderStrategy with
-                override me.CanGetViewModel(host, primary) =
+            new IValueProviderStrategy<Domains.PrimaryDomain,string*obj> with
+                override me.CanProvideValue(primary) =
                     primary = Domains.Eric
-
-                override me.GetViewModel(host, primary) =
+                    
+                override me.GetValue(_) =
                     let model =
                         let topNav = 
                             let twitter = Eric.Web.ViewModels.TopNavigationItem(Resources.Eric.Twitter.Title, String.Format(Resources.Eric.Twitter.HandleUrlFormat, Resources.Eric.Twitter.Handle.Substring(1)))
@@ -41,6 +42,7 @@ type HomeController() =
                         let body = box topNav
                         let footer = PageFooterViewModel()
                         ViewModels.create header body footer
+                    
                     (Views.Shared.Archient, box model)
         }
 
@@ -53,12 +55,12 @@ type HomeController() =
 
         let viewModelStrategy =
             strategies
-            |> Seq.tryFind (fun strategy -> strategy.CanGetViewModel(host, primary))
+            |> Seq.tryFind (fun strategy -> strategy.CanProvideValue(primary))
         
         let view, model = 
             match viewModelStrategy with
             | Some(strategy) ->
-                strategy.GetViewModel(host, primary)
+                strategy.GetValue(primary)
             | None ->
                 let title = String.Format(Resources.Unknown.Home.Title, host)
                 let model = ViewModels.create (PageHeaderViewModel(title)) (box title) (PageFooterViewModel())

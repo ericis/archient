@@ -17,6 +17,6 @@ module Domains =
 
         let uhost = host.ToUpperInvariant()
 
-        if uhost.EndsWith("ERICIS.COM") || uhost.EndsWith("ISERIC.COM") then (host,PrimaryDomain.Eric)
-        else if uhost.EndsWith("ARCHIENT.COM") then (host,PrimaryDomain.Archient)
-        else (uhost,PrimaryDomain.Unknown)
+        if uhost.EndsWith("ERICIS.COM") || uhost.EndsWith("ISERIC.COM") then (host, PrimaryDomain.Eric)
+        else if uhost.EndsWith("ARCHIENT.COM") then (host, PrimaryDomain.Archient)
+        else (uhost, PrimaryDomain.Unknown)

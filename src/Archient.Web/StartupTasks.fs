@@ -18,22 +18,49 @@ module StartupTasks =
 
     open System.Web.Mvc
 
+    open Archient.Contracts
     open Archient.Web.Mvc
     open Archient.Web.Http
     
     let getStartupTasks() = 
         [
             fun () ->
-                
-                let virtualFileExists (path:string) =
-                    path.Contains("tada")
+                let virtualViewPrefix = "@inherits System.Web.Mvc.WebViewPage<dynamic>\n"
 
-                let getVirtualFile (path:string) =
-                    let content = "@inherits System.Web.Mvc.WebViewPage<dynamic>\n<strong>Virtual tada!</strong>"
-                    Virtual.createFileFromString content path
+                let cmsViewProviderStrategy =
+                    Contract.createValueProviderStrategy<string,IVirtualFile>
+                        (fun path -> path.Contains("/cms/"))
+                        (fun path -> 
+                            let virtualContent =
+                                let name = System.IO.Path.GetFileNameWithoutExtension(path.Trim()).ToLowerInvariant()
+                                match name with
+                                | "helloworld" -> "<strong>Hello virtual world!</strong>"
+                                | "footer" -> "<strong>--FOOTER--</strong>"
+                                | _ -> ""
+                            Virtual.createFileFromString (virtualViewPrefix + virtualContent) path)
+
+                let testViewProviderStrategy =
+                    Contract.createValueProviderStrategy<string,IVirtualFile>
+                        (fun path -> path.Contains("/virtual/"))
+                        (fun path -> 
+                            let virtualContent =
+                                let name = System.IO.Path.GetFileNameWithoutExtension(path.Trim()).ToLowerInvariant()
+                                match name with
+                                | "tada" -> "<strong>Tada!</strong>"
+                                | _ -> ""
+                            Virtual.createFileFromString (virtualViewPrefix + virtualContent) path)
+
+                let virtualViewProviderStrategies =
+                    [|cmsViewProviderStrategy; testViewProviderStrategy|]
 
                 ViewEngines.Engines
-                |> Virtual.virtualizeViews virtualFileExists getVirtualFile
+                |> Virtual.virtualizeViews
+                    (fun path -> virtualViewProviderStrategies |> Seq.exists (fun provider -> provider.CanProvideValue(path)))
+                    (fun path -> 
+                        let strategy =
+                            virtualViewProviderStrategies
+                            |> Seq.find (fun provider -> provider.CanProvideValue(path))
+                        strategy.GetValue(path))
                 |> ignore
 
             // MVC Areas

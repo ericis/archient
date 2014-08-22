@@ -49,3 +49,19 @@ type IHealthCheck<'TResult> =
 [<Interface>]
 type IHealthCheck =
     inherit IHealthCheck<string>
+
+/// <summary>Contract for a result provider strategy</summary>
+/// <typeparam name="ctx">The type of context to evaluate when providing a value</param>
+/// <typeparam name="t">The type of value being provided</param>
+[<Interface>]
+type IValueProviderStrategy<'ctx,'t> =
+    
+    /// <summary>Determines if the provider can provide a value given the specified context</summary>
+    /// <param name="context">The context used to determine if a value can be provided</param>
+    /// <returns><c>true</c> if a value can be provided; otherwise <c>false</c></returns>
+    abstract member CanProvideValue : context:'ctx -> bool
+    
+    /// <summary>Retrieves the value given the specified context</summary>
+    /// <param name="context">The context used to retrieve a value</param>
+    /// <returns>The value</returns>
+    abstract member GetValue : context:'ctx -> 't
