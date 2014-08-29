@@ -5,13 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>fe6cbf48-c09e-4854-b8bd-e959672c2587</ProjectGuid>
+    <ProjectGuid>0dbc481f-e6f8-46ed-8c4c-9a73143bdf57</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Web.Mvc.Test.Unit</RootNamespace>
-    <AssemblyName>Web.Mvc.Test.Unit</AssemblyName>
+    <RootNamespace>Web.Api.Test.Unit</RootNamespace>
+    <AssemblyName>Web.Api.Test.Unit</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
-    <Name>Web.Mvc.Test.Unit</Name>
+    <Name>Web.Api.Tests.Unit</Name>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -23,7 +23,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\Web.Mvc.Test.Unit.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Web.Api.Test.Unit.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\Web.Mvc.Test.Unit.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Web.Api.Test.Unit.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -53,13 +53,14 @@
       <Project>{c03731f8-ce9f-4e15-a14d-99230fe7732e}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Web.Mvc\Web.Mvc.fsproj">
-      <Name>Web.Mvc</Name>
-      <Project>{a6ab5e8b-5487-4108-811d-f9a9bc5be195}</Project>
+    <ProjectReference Include="..\Web.Api\Web.Api.fsproj">
+      <Name>Web.Api</Name>
+      <Project>{fa6c6e92-cdee-4bfe-9f8e-6b4a6efaf7b3}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app.config" />
     <Content Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
