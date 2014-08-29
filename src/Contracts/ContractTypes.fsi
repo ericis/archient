@@ -51,8 +51,8 @@ type IHealthCheck =
     inherit IHealthCheck<string>
 
 /// <summary>Contract for a result provider strategy</summary>
-/// <typeparam name="ctx">The type of context to evaluate when providing a value</param>
-/// <typeparam name="t">The type of value being provided</param>
+/// <typeparam name="ctx">The type of context to evaluate when providing a value</typeparam>
+/// <typeparam name="t">The type of value being provided</typeparam>
 [<Interface>]
 type IValueProviderStrategy<'ctx,'t> =
     

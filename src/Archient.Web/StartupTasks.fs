@@ -24,6 +24,7 @@ module StartupTasks =
     
     let getStartupTasks() = 
         [
+            //// Virtualize MVC Views
             fun () ->
                 let virtualViewPrefix = "@inherits System.Web.Mvc.WebViewPage<dynamic>\n"
 
@@ -63,19 +64,19 @@ module StartupTasks =
                         strategy.GetValue(path))
                 |> ignore
 
-            // MVC Areas
+            //// MVC Areas
             StartupTasks.registerDefaultAreas
             
             //// Facebook
 
-            // Web API Routes
+            //// Web API Routes
             fun () -> 
                 StartupTasks.registerDefaultHttpRoutes [ typeof<PagesController>.Namespace ]
             
-            // MVC Filters
+            //// MVC Filters
             StartupTasks.registerDefaultFilters
             
-            // MVC Routes
+            //// MVC Routes
             fun () -> 
                 let controllerDefaults = 
                     {
@@ -91,7 +92,9 @@ module StartupTasks =
 
                 //StartupTasks.registerDefaultMvcRoutes [ typeof<HomeController>.Namespace ]
 
-            // Web Optimization Bundling
+            //// Web Optimization Bundling
+            
+            //// Debug Routes
             fun () ->
                 System.Diagnostics.Debug.WriteLine(Routes.prettyPrint System.Web.Routing.RouteTable.Routes)
         ]
