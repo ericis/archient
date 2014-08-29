@@ -74,6 +74,8 @@
         [Fact, ExampleTest]
         public void Create_Send_And_Receive_With_Logic()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             //// NOTE: This logic never exposes WCF details or the underlying service call details and data mappings.
             ////       Just the business input and output.
 
@@ -103,6 +105,8 @@
         [Fact, ExampleTest]
         public void Create_Service_Container()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             // Creates a WCF client proxy from an extension method using the specified name
             var serviceContainer = this.testServiceClient.ServiceCreate(ConfigEndpointName);
 
@@ -112,6 +116,8 @@
         [Fact, ExampleTest]
         public void Create_And_Call()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             // Wrapper to start a running WCF service
             ExecuteWithRunningService(
                 // creates the WCF client proxy and calls the specified operation
@@ -123,6 +129,8 @@
         [Fact, ExampleTest]
         public void Create_And_Send()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             ExecuteWithRunningService(
                 // creates the WCF client proxy and sends the specified request to the specified operation
                 () => this.testServiceClient.ServiceCreateAndSend(
@@ -166,6 +174,8 @@
         [Fact, ExampleTest]
         public void Create_Send_And_Receive()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             ExecuteWithRunningService(
                 () =>
                 {
@@ -186,6 +196,8 @@
         [Fact, ExampleTest]
         public void Service_Ping()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             ExecuteWithRunningService(
                 () =>
                 {
@@ -201,6 +213,8 @@
         [Fact, ExampleTest]
         public void Service_HealthCheck()
         {
+            //// REQUIRES VS to be "Run as Admin"
+
             ExecuteWithRunningService(
                 () =>
                 {
