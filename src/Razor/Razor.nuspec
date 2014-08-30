@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners>Eric Swanson</owners>
+    <licenseUrl>https://github.com/ericis/archient/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ericis/archient</projectUrl>
+    <!--<iconUrl>https://github.com/ericis/archient</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Archient Razor Library</title>
+    <description>$description$</description>
+    <summary>$id$: A library of abstractions for .NET Razor.</summary>
+    <releaseNotes>
+      $version$: Initial release
+    </releaseNotes>
+    <copyright>
+      Copyright 2014 Internet Information Architects, LLC
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    </copyright>
+    <language>en-US</language>
+    <tags>Archient Razor CMS</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\Microsoft.AspNet.Razor.dll" target="lib\net451" />
+  </files>
+</package>

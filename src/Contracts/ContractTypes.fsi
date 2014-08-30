@@ -1,5 +1,6 @@
 ﻿namespace Archient.Contracts
 
+[<Interface>]
 /// <summary>
 /// Contract for a 'Ping' interface.
 /// Used to test the reachability of a host on an Internet Protocol (IP) network and 
@@ -7,7 +8,6 @@
 /// to a destination computer. The name comes from active sonar terminology which 
 /// sends a pulse of sound and listens for the echo to detect objects underwater.
 /// </summary>
-[<Interface>]
 type IPing =
     /// <summary>
     /// Used to test the reachability of a host on an Internet Protocol (IP) network and 
@@ -37,6 +37,7 @@ type IHealthCheck<'TResult> =
     /// <returns>The result of the health check.</returns>
     abstract member HealthCheck : key:string -> 'TResult
 
+[<Interface>]
 /// <summary>
 /// Contract for a health check implementation that reports the health of the component and optionally dependencies.
 /// </summary>
@@ -46,14 +47,13 @@ type IHealthCheck<'TResult> =
 /// the goal of this interface is to standardize the health check interface to components and not 
 /// the data controlled by the implementation.
 /// </remarks>
-[<Interface>]
 type IHealthCheck =
     inherit IHealthCheck<string>
 
+[<Interface>]
 /// <summary>Contract for a result provider strategy</summary>
 /// <typeparam name="ctx">The type of context to evaluate when providing a value</typeparam>
 /// <typeparam name="t">The type of value being provided</typeparam>
-[<Interface>]
 type IValueProviderStrategy<'ctx,'t> =
     
     /// <summary>Determines if the provider can provide a value given the specified context</summary>

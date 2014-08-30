@@ -34,9 +34,10 @@
       <DocumentationSource sourceFile="..\Web.Host\Web.Host.fsproj" />
       <DocumentationSource sourceFile="..\Web.Mvc\Web.Mvc.fsproj" />
       <DocumentationSource sourceFile="..\Web.Mvc.Host\Web.Mvc.Host.fsproj" />
-      <DocumentationSource sourceFile="..\Contracts\Contracts.fsproj" />
       <DocumentationSource sourceFile="..\Services.WCF\Services.WCF.fsproj" />
       <DocumentationSource sourceFile="..\LeapMotion\LeapMotion.fsproj" />
+      <DocumentationSource sourceFile="..\Razor\Razor.fsproj" />
+      <DocumentationSource sourceFile="..\Contracts\Contracts.fsproj" subFolders="true" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -57,14 +58,15 @@
     <CleanIntermediates>True</CleanIntermediates>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Archient.Services.Clients" isDocumented="True">A library of abstractions for .NET clients of WCF Services.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Testing" isDocumented="True">A library of abstractions for .NET Testing with Xunit.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Web" isDocumented="True">A library of abstractions for .NET Web applications.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Web.Http" isDocumented="True">A library of abstractions for .NET Web API services.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Web.Mvc" isDocumented="True">A library of abstractions for .NET MVC applications.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Contracts" isDocumented="True">A library of contract abstractions for .NET.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Leap" isDocumented="True">A library of abstractions for .NET clients of the Leap Motion controller.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Services" isDocumented="True">A library of abstractions for WCF Services.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Archient.Services.Contracts" isDocumented="True">A library of abstractions for WCF Service contracts.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="Archient.Testing" isDocumented="True">A library of abstractions for .NET Testing with Xunit.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Web" isDocumented="True">A library of abstractions for .NET Web applications.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Web.Http" isDocumented="True">A library of abstractions for .NET Web API services.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Web.Mvc" isDocumented="True">A library of abstractions for .NET MVC applications.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Contracts" isDocumented="True">A library of contract abstractions for .NET.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Leap" isDocumented="True">A library of abstractions for .NET clients of the Leap Motion controller.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Services" isDocumented="True">A library of abstractions for WCF Services.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Archient.Services.Contracts" isDocumented="True">A library of abstractions for WCF Service contracts.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <PostBuildEvent>copy "$(SolutionDir)src\Documentation\Help\$(HtmlHelpName).chm" "$(SolutionDir).deploy\" /y</PostBuildEvent>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>

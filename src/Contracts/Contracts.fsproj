@@ -72,6 +72,7 @@
     <Compile Include="Contract.fsi" />
     <Compile Include="Contract.fs" />
     <None Include="Contracts.nuspec" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation">

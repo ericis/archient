@@ -71,6 +71,7 @@
     <Compile Include="TestTypes.fsi" />
     <Compile Include="TestTypes.fs" />
     <None Include="Test.Xunit.nuspec" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

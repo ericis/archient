@@ -4,21 +4,31 @@
 
 module Assert =
     
-    open System
-
     open Xunit
 
     let areSame (expected:obj) (actual:obj) =
         ignore <| Assert.Same(expected, actual)
 
+    let isSame (expected:obj) (actual:obj) =
+        areSame expected actual
+
     let areNotSame (expected:obj) (actual:obj) =
         ignore <| Assert.NotSame(expected, actual)
+
+    let isNotSame (expected:obj) (actual:obj) =
+        areNotSame expected actual
 
     let areEqual<'T> (expected:'T) (actual:'T) =
         ignore <| Assert.Equal<_>(expected, actual)
 
+    let isEqual<'T> (expected:'T) (actual:'T) =
+        areEqual expected actual
+
     let areNotEqual<'T> (expected:'T) (actual:'T) =
         ignore <| Assert.NotEqual<_>(expected, actual)
+
+    let isNotEqual<'T> (expected:'T) (actual:'T) =
+        areNotEqual expected actual
 
     let isTrue (condition:bool) =
         ignore <| Assert.True(condition)

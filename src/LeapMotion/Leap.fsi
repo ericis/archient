@@ -26,6 +26,7 @@ module Leap =
         abstract member ScreenTaps : IObservable<ScreenTapGesture> with get
 
     /// <summary>Subscribes to an observable collection item</summary>
+    /// <typeparam name="t">The type of observable to subscribe to</typeparam>
     /// <param name="subscription">The subscription function</param>
     /// <param name="observable">The observable being subscribed to</param>
     /// <returns>A disposable subscription reference</returns>

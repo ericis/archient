@@ -78,6 +78,7 @@ copy "$(ProjectDir)..\..\packages\LeapMotion.2.0.4.0\LeapCSharp.dll" "$(TargetDi
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="LeapCSharp.NET4.0">

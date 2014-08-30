@@ -62,6 +62,7 @@
     <Compile Include="WcfTypes.fs" />
     <Compile Include="WcfTypeExtensions.fs" />
     <None Include="Services.Clients.WCF.nuspec" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

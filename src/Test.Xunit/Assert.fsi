@@ -10,11 +10,21 @@ module Assert =
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>
     val areSame : expected:obj -> actual:obj -> unit
+
+    /// <summary>Asserts if the two values are the exact same instances.</summary>
+    /// <param name="expected">The expected value.</param>
+    /// <param name="actual">The actual value.</param>
+    val isSame : expected:obj -> actual:obj -> unit
     
     /// <summary>Asserts if the two values are not the exact same instances.</summary>
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>
     val areNotSame : expected:obj -> actual:obj -> unit
+    
+    /// <summary>Asserts if the two values are not the exact same instances.</summary>
+    /// <param name="expected">The expected value.</param>
+    /// <param name="actual">The actual value.</param>
+    val isNotSame : expected:obj -> actual:obj -> unit
     
     /// <summary>Asserts if the two values are equivalent.</summary>
     /// <typeparam name="T">The type of the values.</typeparam>
@@ -22,11 +32,23 @@ module Assert =
     /// <param name="actual">The actual value.</param>
     val areEqual<'T> : expected:'T -> actual:'T -> unit
     
+    /// <summary>Asserts if the two values are equivalent.</summary>
+    /// <typeparam name="T">The type of the values.</typeparam>
+    /// <param name="expected">The expected value.</param>
+    /// <param name="actual">The actual value.</param>
+    val isEqual<'T> : expected:'T -> actual:'T -> unit
+    
     /// <summary>Asserts if the two values are not equivalent.</summary>
     /// <typeparam name="T">The type of the values.</typeparam>
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>
     val areNotEqual<'T> : expected:'T -> actual:'T -> unit
+    
+    /// <summary>Asserts if the two values are not equivalent.</summary>
+    /// <typeparam name="T">The type of the values.</typeparam>
+    /// <param name="expected">The expected value.</param>
+    /// <param name="actual">The actual value.</param>
+    val isNotEqual<'T> : expected:'T -> actual:'T -> unit
     
     /// <summary>Asserts if the condition is <c>true</c>.</summary>
     /// <param name="condition">The condition to check.</param>

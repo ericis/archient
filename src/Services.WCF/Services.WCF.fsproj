@@ -63,6 +63,7 @@
     <Compile Include="ServiceTypes.fsi" />
     <Compile Include="ServiceTypes.fs" />
     <None Include="Services.WCF.nuspec" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
