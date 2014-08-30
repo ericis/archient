@@ -10,6 +10,14 @@ Archient is a set of code libraries (frameworks) that aim to enable developers t
   * Minimize code "plumbing"
   * Strategic use of package dependencies
 
+### Implementation Reference Examples of...
+
+  * Auto-versioning of assemblies for local developer machines and TFS Build on top of [Wintellect TFS Build](https://github.com/Wintellect/WintellectTFSBuildNumber)
+  * Automated documentation through [Sandcastle](https://shfb.codeplex.com/)
+  * Automated [NuGet packaging](http://www.nuget.org/)
+  * [F#](http://fsharp.org/) as a real-world solution, even for C# package consumers
+  * [F# Signature files](http://msdn.microsoft.com/en-us/library/dd233196.aspx) to separate code contracts and documentation from their implementation. This is useful for technical leads to create a specification that developers can implement.
+
 ## Libraries
 
 All libraries are currently in experimental "alpha" stage.
